@@ -43,6 +43,37 @@ if (navBtn && menu){
   mq.addEventListener('change', function(e){ if (e.matches) setMenu(false); });
 }
 
+/* ── language toggle (EN / ES) ───────────────────────────────────── */
+/* Every translated element carries data-es="…"; English is cached in
+   data-en on first switch. Choice persists in localStorage and can be
+   forced with ?lang=es (handy for sharing a Spanish link). */
+var LANG_KEY = 'nb-lang';
+var lang = 'en';
+try { lang = localStorage.getItem(LANG_KEY) || 'en'; } catch(e){}
+var langQ = new URLSearchParams(location.search).get('lang');
+if (langQ === 'es' || langQ === 'en') lang = langQ;
+
+function applyLang(l){
+  lang = l;
+  document.documentElement.lang = l;
+  $$('[data-es]').forEach(function(n){
+    if (n.getAttribute('data-en') === null) n.setAttribute('data-en', n.innerHTML);
+    var html = l === 'es' ? n.getAttribute('data-es') : n.getAttribute('data-en');
+    if (n.innerHTML !== html) n.innerHTML = html;
+  });
+  $$('#langBtn [data-l]').forEach(function(s){
+    s.classList.toggle('is-on', s.getAttribute('data-l') === l);
+  });
+  try { localStorage.setItem(LANG_KEY, l); } catch(e){}
+}
+var langBtn = $('#langBtn');
+if (langBtn){
+  langBtn.addEventListener('click', function(){
+    applyLang(lang === 'es' ? 'en' : 'es');
+  });
+}
+applyLang(lang);
+
 /* ── scroll reveal ───────────────────────────────────────────────── */
 var revealed = $$('[data-reveal]');
 if (RM || !('IntersectionObserver' in window)){
