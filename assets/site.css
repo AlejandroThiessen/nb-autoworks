@@ -589,3 +589,18 @@ footer nav a:hover, .foot__contact a:hover{ color:var(--lime) }
   .btn, .card, .shot, .person, .emblem, .card__media img,
   .nav__menu, .burger svg{ transition:none }
 }
+
+/* ── 20 · LANGUAGE TOGGLE (EN / ES) ───────────────────────────────── */
+.nav__brand{ margin-right:auto }
+.langbtn{
+  display:inline-flex; align-items:center; gap:7px;
+  background:none; border:1px solid var(--line-2); cursor:pointer;
+  height:44px; padding:0 13px;
+  font:500 11px/1 var(--mono); letter-spacing:.14em;
+  transition:border-color .15s ease;
+}
+.langbtn:hover{ border-color:var(--ink) }
+.langbtn__sep{ color:var(--line-2) }
+.langbtn [data-l]{ color:var(--steel-2); padding:3px 0;
+  border-bottom:2px solid transparent; transition:color .15s ease }
+.langbtn [data-l].is-on{ color:var(--ink); border-color:var(--lime) }
