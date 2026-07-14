@@ -91,13 +91,26 @@ if (RM || !('IntersectionObserver' in window)){
 var yr = $('#year');
 if (yr) yr.textContent = new Date().getFullYear();
 
+/* ── floating WhatsApp pill (all pages) ──────────────────────────── */
+var fab = document.createElement('a');
+fab.className = 'wa-fab';
+fab.href = 'https://wa.me/526251149099?text=Hola%20NB%20Autoworks%2C%20quiero%20agendar%20una%20cita.';
+fab.target = '_blank';
+fab.rel = 'noopener';
+fab.setAttribute('aria-label', 'WhatsApp NB Autoworks');
+fab.innerHTML = '<svg aria-hidden="true"><use href="#i-chat"/></svg><span>WhatsApp</span>';
+document.body.appendChild(fab);
+function fabCheck(){ fab.classList.toggle('is-show', scrollY > 420); }
+addEventListener('scroll', fabCheck, {passive:true});
+fabCheck();
+
 /* ── hero tachometer — cold start, rev, settle to idle ───────────── */
 (function tach(){
   var svg = $('#tach'); if (!svg) return;
   var out = $('#rpmOut');
 
   var C = 220, A0 = 135, SWEEP = 270, MAX = 8, RED = 7;
-  var LIME = '#a9c917', RED1 = '#e8382d', RED2 = '#d92d24';
+  var LIME = '#b5d327', RED1 = '#ff4a3e', RED2 = '#f0392e';
 
   function el(name, attrs, parent){
     var e = document.createElementNS(NS, name);
@@ -129,8 +142,8 @@ if (yr) yr.textContent = new Date().getFullYear();
   function easeInOut(t){ return t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3)/2; }
   function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
 
-  /* dial rings */
-  arc(196, A0, A0 + SWEEP, { stroke: 'rgba(20,22,26,.18)', 'stroke-width': 1 });
+  /* dial rings — drawn for the dark theme */
+  arc(196, A0, A0 + SWEEP, { stroke: 'rgba(238,241,235,.16)', 'stroke-width': 1 });
   arc(196, ang(RED), A0 + SWEEP, { stroke: RED1, 'stroke-width': 3,
       style: 'filter:drop-shadow(0 0 6px rgba(255,59,48,.30))' });
 
@@ -141,8 +154,8 @@ if (yr) yr.textContent = new Date().getFullYear();
     var p1 = pt(isMajor ? 176 : 183, a), p2 = pt(193, a);
     el('line', {
       x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1],
-      stroke: isMajor ? (val >= RED ? RED2 : '#14161a')
-                      : (val >= RED ? 'rgba(217,45,36,.45)' : 'rgba(20,22,26,.30)'),
+      stroke: isMajor ? (val >= RED ? RED2 : '#e9ece4')
+                      : (val >= RED ? 'rgba(217,45,36,.5)' : 'rgba(238,241,235,.32)'),
       'stroke-width': isMajor ? 2 : 1
     });
   }
@@ -150,17 +163,17 @@ if (yr) yr.textContent = new Date().getFullYear();
   /* numerals */
   for (var n = 0; n <= MAX; n++){
     var p = pt(150, ang(n));
-    txt(p[0], p[1], n, 23, n >= RED ? RED2 : '#566069',
+    txt(p[0], p[1], n, 23, n >= RED ? RED2 : '#a6afa6',
         { 'dominant-baseline': 'central', 'font-weight': 500 });
   }
-  txt(C, C + 64, '×1000 RPM', 11, '#848d96', { 'letter-spacing': '2' });
-  txt(C, C + 84, 'NB AUTOWORKS', 9, '#99a1a9', { 'letter-spacing': '3' });
-  txt(C, C + 100, 'CAMPO 4 · CHIH.', 7.5, '#aab1b8', { 'letter-spacing': '3' });
+  txt(C, C + 64, '×1000 RPM', 11, '#7f877f', { 'letter-spacing': '2' });
+  txt(C, C + 84, 'NB AUTOWORKS', 9, '#8d958d', { 'letter-spacing': '3' });
+  txt(C, C + 100, 'CAMPO 4 · CHIH.', 7.5, '#737b73', { 'letter-spacing': '3' });
 
   /* needle */
   var g = el('g', { style: 'filter:drop-shadow(0 0 6px rgba(139,166,7,.45))' });
   el('line', { x1: C - 26, y1: C, x2: C + 158, y2: C, stroke: LIME, 'stroke-width': 3.5 }, g);
-  el('circle', { cx: C, cy: C, r: 11, fill: '#14161a', stroke: 'rgba(20,22,26,.25)' });
+  el('circle', { cx: C, cy: C, r: 11, fill: '#0a0b0e', stroke: 'rgba(238,241,235,.28)' });
   el('circle', { cx: C, cy: C, r: 3.2, fill: LIME });
 
   var IDLE = 0.85, PEAK = 6.9;
