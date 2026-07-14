@@ -332,7 +332,8 @@ body.menu-open{ overflow:hidden }
   text-shadow:0 2px 40px rgba(0,0,0,.55);
 }
 
-/* ── 07 · SERVICE DISCS (circular photos) ─────────────────────────── */
+/* ── 07 · SERVICE TILES (rounded-square photos; class names kept from
+      the earlier circular pass) ─────────────────────────────────────── */
 .discs{ display:grid; grid-template-columns:repeat(3, 1fr);
   gap:clamp(30px, 4vw, 48px) 14px }
 .disc{
@@ -340,7 +341,7 @@ body.menu-open{ overflow:hidden }
   text-align:center; text-decoration:none;
 }
 .disc__img{
-  width:clamp(160px, 15vw, 210px); aspect-ratio:1; border-radius:50%;
+  width:clamp(180px, 17vw, 240px); aspect-ratio:1; border-radius:14px;
   overflow:hidden; border:1px solid var(--line-2);
   box-shadow:0 22px 60px rgba(0,0,0,.5);
   transition:border-color .2s ease, box-shadow .2s ease;
