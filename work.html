@@ -138,83 +138,99 @@
   </div>
 </section>
 
-<div class="band" aria-hidden="true"></div>
+<div class="band" aria-hidden="true">
+  <div class="ticker">
+    <div class="ticker__track">
+      <div class="ticker__group"><b data-es="Servicio de aceite y filtro">Oil &amp; filter service</b><i></i><b data-es="Diagnóstico">Diagnostics</b><i></i><b data-es="Frenos">Brakes</b><i></i><b data-es="Suspensión y dirección">Suspension &amp; steering</b><i></i><b data-es="Rines y llantas">Wheels &amp; tires</b><i></i><b data-es="Motor y transmisión">Engine &amp; transmission</b><i></i><b data-es="Diésel">Diesel</b><i></i><b data-es="Proyectos de performance">Performance builds</b><i></i><b data-es="Rectificado de discos en sitio">Rotor machining on-site</b><i></i><b data-es="English · Español">English · Español</b><i></i></div>
+      <div class="ticker__group"><b data-es="Servicio de aceite y filtro">Oil &amp; filter service</b><i></i><b data-es="Diagnóstico">Diagnostics</b><i></i><b data-es="Frenos">Brakes</b><i></i><b data-es="Suspensión y dirección">Suspension &amp; steering</b><i></i><b data-es="Rines y llantas">Wheels &amp; tires</b><i></i><b data-es="Motor y transmisión">Engine &amp; transmission</b><i></i><b data-es="Diésel">Diesel</b><i></i><b data-es="Proyectos de performance">Performance builds</b><i></i><b data-es="Rectificado de discos en sitio">Rotor machining on-site</b><i></i><b data-es="English · Español">English · Español</b><i></i></div>
+    </div>
+  </div>
+</div>
 
 
 <section class="sec">
   <div class="container">
+    <div class="filters" role="group" aria-label="Filter the gallery">
+      <button class="filter is-on" type="button" data-f="all"><span data-es="Todos">All</span></button>
+      <button class="filter" type="button" data-f="performance"><span data-es="Performance">Performance</span></button>
+      <button class="filter" type="button" data-f="trucks"><span data-es="Camionetas">Trucks</span></button>
+      <button class="filter" type="button" data-f="engine"><span data-es="Motor y reparación mayor">Engine &amp; heavy repair</span></button>
+      <button class="filter" type="button" data-f="service"><span data-es="Servicio">Service</span></button>
+      <button class="filter" type="button" data-f="shop"><span data-es="El taller">The shop</span></button>
+    </div>
+
     <div class="gallery">
-      <figure class="shot" data-reveal>
+      <figure class="shot" data-cat="performance" data-reveal>
         <img src="assets/work-zr1.jpg" alt="Red Corvette ZR1 with carbon aero wing in the shop" width="1600" height="900" loading="lazy">
         <figcaption><span class="shot__t" data-es="Corvette ZR1 — aero y servicio">Corvette ZR1 — aero &amp; service</span><span class="shot__tag">Performance</span></figcaption>
       </figure>
 
-      <figure class="shot" data-reveal>
+      <figure class="shot" data-cat="trucks" data-reveal>
         <img src="assets/work-raptor.jpg" alt="F-150 Raptor R on the lift with a wheel off on a support stand" width="1000" height="1250" loading="lazy">
         <figcaption><span class="shot__t" data-es="Raptor R — sin ruedas">Raptor R — wheels off</span><span class="shot__tag" data-es="Camionetas">Trucks</span></figcaption>
       </figure>
 
-      <figure class="shot" data-reveal>
+      <figure class="shot" data-cat="engine" data-reveal>
         <img src="assets/work-gls.jpg" alt="Mercedes-Benz GLS on a lift with the powertrain removed" width="1000" height="1250" loading="lazy">
         <figcaption><span class="shot__t" data-es="Mercedes GLS — tren motriz fuera">Mercedes GLS — powertrain out</span><span class="shot__tag" data-es="Reparación mayor">Heavy repair</span></figcaption>
       </figure>
 
-      <figure class="shot" data-reveal>
+      <figure class="shot" data-cat="performance" data-reveal>
         <img src="assets/work-m3.jpg" alt="Lime green BMW M3 Competition in the shop" width="1600" height="900" loading="lazy">
         <figcaption><span class="shot__t" data-es="M3 Competition — colores del taller">M3 Competition — shop colors</span><span class="shot__tag">Performance</span></figcaption>
       </figure>
 
-      <figure class="shot" data-reveal>
+      <figure class="shot" data-cat="trucks" data-reveal>
         <img src="assets/work-raptor-grille.jpg" alt="Ford Raptor R grille with amber marker lights" width="1000" height="1250" loading="lazy">
         <figcaption><span class="shot__t" data-es="Raptor R — en servicio">Raptor R — in for service</span><span class="shot__tag" data-es="Camionetas">Trucks</span></figcaption>
       </figure>
 
-      <figure class="shot" data-reveal>
+      <figure class="shot" data-cat="engine" data-reveal>
         <img src="assets/work-lt5.jpg" alt="Supercharged LT5 V8 engine bay of the Corvette ZR1" width="1600" height="900" loading="lazy">
         <figcaption><span class="shot__t" data-es="LT5 supercargado, en servicio">Supercharged LT5, in for work</span><span class="shot__tag" data-es="Motor">Engine</span></figcaption>
       </figure>
 
-      <figure class="shot" data-reveal>
+      <figure class="shot" data-cat="engine" data-reveal>
         <img src="assets/work-engine-out.jpg" alt="Complete engine and transmission on a stand after removal" width="1000" height="1333" loading="lazy">
         <figcaption><span class="shot__t" data-es="Motor y transmisión, fuera y limpios">Engine &amp; trans, out clean</span><span class="shot__tag" data-es="Reparación mayor">Heavy repair</span></figcaption>
       </figure>
 
-      <figure class="shot" data-reveal>
+      <figure class="shot" data-cat="service" data-reveal>
         <img src="assets/work-rr.jpg" alt="White Range Rover front end with black grille and LED headlights" width="1600" height="900" loading="lazy">
         <figcaption><span class="shot__t" data-es="Range Rover — servido y entregado">Range Rover — serviced &amp; out</span><span class="shot__tag" data-es="Servicio">Service</span></figcaption>
       </figure>
 
-      <figure class="shot" data-reveal>
+      <figure class="shot" data-cat="service" data-reveal>
         <img src="assets/work-amg-wheel.jpg" alt="Gloss black AMG multi-spoke wheel on a white Mercedes" width="1000" height="1500" loading="lazy">
         <figcaption><span class="shot__t" data-es="Rines y llantas">Wheels &amp; tires</span><span class="shot__tag" data-es="Servicio">Service</span></figcaption>
       </figure>
 
-      <figure class="shot" data-reveal>
+      <figure class="shot" data-cat="performance" data-reveal>
         <img src="assets/work-tt-f150.jpg" alt="Twin-turbo Boss 302 V8 in an F-150 engine bay" width="1600" height="900" loading="lazy">
         <figcaption><span class="shot__t" data-es="F-150 Boss 302 biturbo">Twin-turbo Boss 302 F-150</span><span class="shot__tag" data-es="Proyecto">Build</span></figcaption>
       </figure>
 
-      <figure class="shot" data-reveal>
+      <figure class="shot" data-cat="performance" data-reveal>
         <img src="assets/work-zr1-front.jpg" alt="Corvette ZR1 from the front with the hood open" width="1000" height="1500" loading="lazy">
         <figcaption><span class="shot__t" data-es="ZR1 — de frente, cofre arriba">ZR1 — nose down, hood up</span><span class="shot__tag">Performance</span></figcaption>
       </figure>
 
-      <figure class="shot" data-reveal>
+      <figure class="shot" data-cat="shop" data-reveal>
         <img src="assets/shop-busy.jpg" alt="Service bays with trucks and SUVs on lifts" width="1600" height="900" loading="lazy">
         <figcaption><span class="shot__t" data-es="Un día normal en el taller">A regular day on the floor</span><span class="shot__tag" data-es="El taller">The shop</span></figcaption>
       </figure>
 
-      <figure class="shot" data-reveal>
+      <figure class="shot" data-cat="shop" data-reveal>
         <img src="assets/work-balancer.jpg" alt="Ranger LS43B laser-spot wheel balancer" width="1000" height="1250" loading="lazy">
         <figcaption><span class="shot__t" data-es="Balanceo de ruedas con láser">Laser-spot wheel balancing</span><span class="shot__tag" data-es="Equipo">Equipment</span></figcaption>
       </figure>
 
-      <figure class="shot" data-reveal>
+      <figure class="shot" data-cat="service" data-reveal>
         <img src="assets/work-brake-lathe.jpg" alt="Ranger RL-8500 brake lathe station in the shop" width="1000" height="1250" loading="lazy">
         <figcaption><span class="shot__t" data-es="Rectificado de discos, en sitio">Rotor machining, on-site</span><span class="shot__tag" data-es="Frenos">Brakes</span></figcaption>
       </figure>
 
-      <figure class="shot" data-reveal>
+      <figure class="shot" data-cat="shop" data-reveal>
         <img src="assets/work-floor.jpg" alt="Busy shop floor with several vehicles up on lifts" width="1600" height="900" loading="lazy">
         <figcaption><span class="shot__t" data-es="Bahías llenas, por la tarde">Full bays, late afternoon</span><span class="shot__tag" data-es="El taller">The shop</span></figcaption>
       </figure>

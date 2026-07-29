@@ -1,5 +1,8 @@
 <!doctype html>
-<html lang="en">
+<!-- t-light: the homepage runs the light theme (assets/light.css).
+     The other pages are still the dark showroom — drop the class and
+     the light.css link below to put this page back with them. -->
+<html lang="en" class="t-light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,10 +11,11 @@
 <meta property="og:title" content="NB Autoworks — Auto Repair & Maintenance · Campo 4, Chihuahua">
 <meta property="og:description" content="NB Autoworks is a full-service auto repair and maintenance shop in Campo 4, Chihuahua — trucks, diesel, European and performance vehicles. Book online or WhatsApp us.">
 <meta property="og:image" content="assets/building-logo.jpg">
-<meta name="theme-color" content="#101216">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/light.css">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -96,7 +100,7 @@
 <header class="nav" id="nav">
   <div class="container nav__in">
     <a class="nav__brand" href="index.html" aria-label="NB Autoworks — home">
-      <img src="assets/logo-nb-light.png" alt="NB Autoworks" width="550" height="346">
+      <img src="assets/logo-nb.png" alt="NB Autoworks" width="550" height="346">
     </a>
     <nav class="nav__links" aria-label="Primary">
       <a href="services.html" data-es="Servicios">Services</a>
@@ -132,7 +136,7 @@
   <div class="container hero__grid">
     <div>
       <p class="eyebrow" data-reveal data-es="Mecánica · Mantenimiento · Performance">Auto repair · Maintenance · Performance</p>
-      <h1 id="hero-h" data-reveal style="--rd:70ms" data-es="Que siga<br>andando.">
+      <h1 id="hero-h" data-reveal="blur" style="--rd:70ms" data-es="Que siga<br>andando.">
         Keep it<br>running.
       </h1>
       <p class="hero__kick" data-reveal style="--rd:120ms" data-es="Y que ande mejor.">Make it better.</p>
@@ -164,9 +168,21 @@
       </div>
     </div>
   </div>
+
+  <a class="scroll-cue" href="#welcome">
+    <span data-es="Baja">Scroll</span>
+    <span class="scroll-cue__line" aria-hidden="true"></span>
+  </a>
 </section>
 
-<div class="band" aria-hidden="true"></div>
+<div class="band" aria-hidden="true">
+  <div class="ticker">
+    <div class="ticker__track">
+      <div class="ticker__group"><b data-es="Servicio de aceite y filtro">Oil &amp; filter service</b><i></i><b data-es="Diagnóstico">Diagnostics</b><i></i><b data-es="Frenos">Brakes</b><i></i><b data-es="Suspensión y dirección">Suspension &amp; steering</b><i></i><b data-es="Rines y llantas">Wheels &amp; tires</b><i></i><b data-es="Motor y transmisión">Engine &amp; transmission</b><i></i><b data-es="Diésel">Diesel</b><i></i><b data-es="Proyectos de performance">Performance builds</b><i></i><b data-es="Rectificado de discos en sitio">Rotor machining on-site</b><i></i><b data-es="English · Español">English · Español</b><i></i></div>
+      <div class="ticker__group"><b data-es="Servicio de aceite y filtro">Oil &amp; filter service</b><i></i><b data-es="Diagnóstico">Diagnostics</b><i></i><b data-es="Frenos">Brakes</b><i></i><b data-es="Suspensión y dirección">Suspension &amp; steering</b><i></i><b data-es="Rines y llantas">Wheels &amp; tires</b><i></i><b data-es="Motor y transmisión">Engine &amp; transmission</b><i></i><b data-es="Diésel">Diesel</b><i></i><b data-es="Proyectos de performance">Performance builds</b><i></i><b data-es="Rectificado de discos en sitio">Rotor machining on-site</b><i></i><b data-es="English · Español">English · Español</b><i></i></div>
+    </div>
+  </div>
+</div>
 
 <!-- ═══ FACT STRIP ═══════════════════════════════════════════════════ -->
 <section class="strip" aria-label="Quick facts">
@@ -180,7 +196,7 @@
 
 <!-- ═══ WELCOME + VALUE PROPS (wording adapted from about.html values —
      ══ FILLER-adjacent: owner should sign off the promises here) ═════ -->
-<section class="sec welcome" aria-labelledby="welcome-h">
+<section class="sec welcome" id="welcome" aria-labelledby="welcome-h">
   <div class="container">
     <p class="welcome__hi" data-reveal data-es="Bienvenido,">Welcome,</p>
     <h2 class="welcome__to" id="welcome-h" data-reveal style="--rd:60ms" data-es="A NB Autoworks">To NB Autoworks</h2>
@@ -220,7 +236,7 @@
   <div class="statement__bg" role="img" aria-label="Supercharged V8 engine bay, dimly lit"></div>
   <div class="container statement__in">
     <p class="statement__kick" data-reveal data-es="Tu camioneta · Tu auto · Tu proyecto">Your truck · Your daily · Your build</p>
-    <h2 data-reveal style="--rd:80ms" data-es="Merece algo mejor.">It deserves better.</h2>
+    <h2 data-reveal="blur" style="--rd:80ms" data-es="Merece algo mejor.">It deserves better.</h2>
   </div>
 </section>
 
@@ -286,41 +302,62 @@
   </div>
 </section>
 
-<!-- ═══ BRANDS (dark wall of badges — page fades in & out of it) ═════ -->
-<section class="brands" id="brands" aria-labelledby="brands-h">
+<!-- ═══ MAKES (replaces the old badge wall — names, not logos) ═══════ -->
+<section class="sec makes" id="makes" aria-labelledby="makes-h">
   <div class="container">
     <div class="sec-head">
       <div class="sec-head__row">
-        <p class="eyebrow" data-es="Marcas que atendemos">Brands we work on</p>
+        <p class="eyebrow" data-es="Marcas que atendemos">Makes we service</p>
         <p class="anno" data-es="Las de siempre en nuestras rampas">The regulars on our lifts</p>
       </div>
-      <h2 class="sec-title" id="brands-h" data-es="Toda marca. <em>Todo emblema.</em>">Every make. <em>Every badge.</em></h2>
-      <p class="lede" data-es="Camionetas de trabajo, autos de diario, alemanes y muscle americano — estos son los emblemas que vemos semana tras semana.">Work trucks, dailies, German metal and American muscle —
-        these are the badges we see week in, week out.</p>
+      <h2 class="sec-title" id="makes-h" data-es="Toda marca <em>en nuestras rampas.</em>">Every make <em>on our lifts.</em></h2>
+      <p class="lede" data-es="Camionetas de trabajo, autos de diario, alemanes y muscle americano — si rueda, pasa por nuestras bahías.">Work trucks, dailies, German metal and American muscle —
+        if it rolls, it comes through our bays.</p>
     </div>
 
-    <ul class="emblems">
-      <li class="emblem" data-reveal><img src="assets/brands/ford.jpg" alt="" width="640" height="640" loading="lazy"><span>Ford</span></li>
-      <li class="emblem" data-reveal style="--rd:50ms"><img src="assets/brands/chevrolet.jpg" alt="" width="640" height="640" loading="lazy"><span>Chevrolet</span></li>
-      <li class="emblem" data-reveal style="--rd:100ms"><img src="assets/brands/gmc.jpg" alt="" width="640" height="640" loading="lazy"><span>GMC</span></li>
-      <li class="emblem" data-reveal style="--rd:150ms"><img src="assets/brands/ram.jpg" alt="" width="640" height="640" loading="lazy"><span>Ram</span></li>
-      <li class="emblem" data-reveal style="--rd:200ms"><img src="assets/brands/jeep.jpg" alt="" width="640" height="640" loading="lazy"><span>Jeep</span></li>
-      <li class="emblem" data-reveal><img src="assets/brands/toyota.jpg" alt="" width="640" height="640" loading="lazy"><span>Toyota</span></li>
-      <li class="emblem" data-reveal style="--rd:50ms"><img src="assets/brands/honda.jpg" alt="" width="640" height="640" loading="lazy"><span>Honda</span></li>
-      <li class="emblem" data-reveal style="--rd:100ms"><img src="assets/brands/nissan.jpg" alt="" width="640" height="640" loading="lazy"><span>Nissan</span></li>
-      <li class="emblem" data-reveal style="--rd:150ms"><img src="assets/brands/mazda.jpg" alt="" width="640" height="640" loading="lazy"><span>Mazda</span></li>
-      <li class="emblem" data-reveal style="--rd:200ms"><img src="assets/brands/lincoln.jpg" alt="" width="640" height="640" loading="lazy"><span>Lincoln</span></li>
-      <li class="emblem" data-reveal><img src="assets/brands/bmw.jpg" alt="" width="640" height="640" loading="lazy"><span>BMW</span></li>
-      <li class="emblem" data-reveal style="--rd:50ms"><img src="assets/brands/mercedes.jpg" alt="" width="640" height="640" loading="lazy"><span>Mercedes-Benz</span></li>
-      <li class="emblem" data-reveal style="--rd:100ms"><img src="assets/brands/audi.jpg" alt="" width="640" height="640" loading="lazy"><span>Audi</span></li>
-      <li class="emblem" data-reveal style="--rd:150ms"><img src="assets/brands/porsche.jpg" alt="" width="640" height="640" loading="lazy"><span>Porsche</span></li>
-      <li class="emblem" data-reveal style="--rd:200ms"><img src="assets/brands/corvette.jpg" alt="" width="640" height="640" loading="lazy"><span>Corvette</span></li>
-    </ul>
+    <div class="makes__grid">
+      <div class="make-col" data-reveal>
+        <h3 data-es="Camionetas y diésel">Trucks &amp; diesel</h3>
+        <ul>
+          <li>Ford</li>
+          <li>Chevrolet</li>
+          <li>GMC</li>
+          <li>Ram</li>
+          <li>Jeep</li>
+        </ul>
+      </div>
+      <div class="make-col" data-reveal style="--rd:70ms">
+        <h3 data-es="Japoneses">Japanese</h3>
+        <ul>
+          <li>Toyota</li>
+          <li>Honda</li>
+          <li>Nissan</li>
+          <li>Mazda</li>
+        </ul>
+      </div>
+      <div class="make-col" data-reveal style="--rd:140ms">
+        <h3 data-es="Europeos">European</h3>
+        <ul>
+          <li>BMW</li>
+          <li>Mercedes-Benz</li>
+          <li>Audi</li>
+          <li>Porsche</li>
+        </ul>
+      </div>
+      <div class="make-col" data-reveal style="--rd:210ms">
+        <h3 data-es="Performance americano">American performance</h3>
+        <ul>
+          <li>Corvette</li>
+          <li>Lincoln</li>
+        </ul>
+        <p data-es="…y los proyectos de una sola pieza: turbo, supercargador y autos de proyecto.">…plus the one-offs: turbo and supercharger builds, project cars.</p>
+      </div>
+    </div>
 
-    <div class="brands__note" data-reveal>
-      <p data-es="<strong>¿No ves tu marca?</strong> Si rueda, lo revisamos — diésel, clásico o recién salido de agencia."><strong>Don't see your badge?</strong> If it rolls, we'll look at it —
+    <div class="cards__note" data-reveal>
+      <p data-es="<strong>¿No ves tu marca?</strong> Si rueda, lo revisamos — diésel, clásico o recién salido de agencia."><strong>Don't see yours?</strong> If it rolls, we'll look at it —
         diesel, classic or brand-new.</p>
-      <a class="btn btn--ghost-d btn--sm" href="https://wa.me/526251149099?text=Hola%20NB%20Autoworks%2C%20tengo%20una%20pregunta." target="_blank" rel="noopener">
+      <a class="btn btn--ghost btn--sm" href="https://wa.me/526251149099?text=Hola%20NB%20Autoworks%2C%20tengo%20una%20pregunta." target="_blank" rel="noopener">
         <svg><use href="#i-chat"/></svg><span data-es="Pregunta por WhatsApp">Ask on WhatsApp</span>
       </a>
     </div>
@@ -533,7 +570,7 @@
   <div class="container">
     <div class="foot__grid">
       <div class="foot__brand">
-        <img src="assets/logo-nb-light.png" alt="NB Autoworks" width="550" height="346">
+        <img src="assets/logo-nb.png" alt="NB Autoworks" width="550" height="346">
         <p data-es="Taller de reparación y mantenimiento automotriz en Campo&nbsp;4, Chihuahua. English spoken · Se habla español.">Car repair and maintenance service in Campo&nbsp;4, Chihuahua.
            English spoken · Se habla español.</p>
       </div>

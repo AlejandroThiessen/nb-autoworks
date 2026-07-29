@@ -1,0 +1,316 @@
+/* ════════════════════════════════════════════════════════════════════
+   NB AUTOWORKS — LIGHT THEME · homepage only
+   ─────────────────────────────────────────────────────────────────────
+   Loaded by index.html AFTER site.css, and only there. Every rule is
+   scoped to html.t-light, so the other pages keep the dark showroom
+   look untouched. Remove the class + the <link> to revert the homepage.
+
+   HOW THE COLOUR WORKS
+     · Most of the page flips for free — site.css is token-driven, so
+       redefining the tokens below turns charcoal rooms into paper ones.
+     · Bright NB lime (--lime, #b5d327) is kept exactly as-is so every
+       lime FILL — the ticker band, primary buttons, section rules —
+       still carries the brand at full strength with dark type on it.
+     · Bright lime is unreadable as small TEXT on paper (1.4:1), so a
+       deep shop-olive (--lime-ink, 5.7:1 on white) takes over wherever
+       lime was used for type, icons and hairlines. Those overrides are
+       collected in §03 below.
+     · Dark-theme shadows (rgba(0,0,0,.5)) are pure mud on paper, so
+       they're re-cut soft and green-black via --sh-*.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── 01 · TOKENS ──────────────────────────────────────────────────── */
+html.t-light{
+  color-scheme: light;
+
+  /* ground + surfaces — paper and concrete, room by room */
+  --paper:   #ffffff;   /* page ground                        */
+  --paper-2: #f4f6f1;   /* raised rooms (a breath of lime)    */
+  --panel:   #ffffff;   /* cards                              */
+  --dark:    #eff1ea;   /* was the deepest black — now the grey bands */
+  --dark-2:  #e6e9df;   /* hover rows inside those bands      */
+
+  /* lines */
+  --line:   rgba(22,24,26,.10);
+  --line-2: rgba(22,24,26,.20);
+  --line-d: rgba(22,24,26,.14);
+
+  /* ink — dark on light */
+  --ink:     #16181a;
+  --steel:   #5d6560;   /* body copy      — 6.0:1 on white */
+  --steel-2: #6e766f;   /* micro-labels   — 4.7:1 on white */
+  --bone:    #16181a;   /* "brightest" ink is now the darkest */
+
+  /* accent — the lime stays the fill, olive carries the type */
+  --lime-ink: #56720b;
+  --lime-dim: rgba(181,211,39,.22);
+  --lime-glow:rgba(150,180,20,.45);
+  --red:      #d0281c;
+  --red-2:    #c4241a;
+
+  /* shadows — soft, green-black, nothing muddy */
+  --sh-1: 0 2px 6px rgba(22,28,18,.05);
+  --sh-2: 0 10px 26px rgba(22,28,18,.08);
+  --sh-3: 0 22px 50px rgba(22,28,18,.11);
+  --sh-4: 0 28px 66px rgba(22,28,18,.14);
+}
+
+/* ── 02 · BASE ────────────────────────────────────────────────────── */
+/* the film grain reads as dirt on paper — barely there, or gone */
+.t-light body::after{ opacity:.03 }
+.t-light :focus-visible{ outline-color:var(--lime-ink) }
+
+/* ── 03 · LIME AS TYPE → OLIVE ────────────────────────────────────── */
+.t-light .eyebrow,
+.t-light .sec-title em,
+.t-light .hero__kick,
+.t-light .hero__meta svg,
+.t-light .strip__item > svg,
+.t-light .prop svg,
+.t-light .prop:hover h3,
+.t-light .statement__kick,
+.t-light .disc:hover h3,
+.t-light .make-col h3,
+.t-light .make-col li:hover,
+.t-light .shop__list svg,
+.t-light .fcard__step,
+.t-light .shot__tag,
+.t-light .shot:hover .shot__t,
+.t-light .contact-rows svg,
+.t-light .contact-rows a::after,
+.t-light .figure:hover figcaption,
+.t-light .btn--ghost:hover,
+.t-light .btn--ghost-d:hover,
+.t-light .gauge-card__hint b,
+.t-light footer nav a:hover,
+.t-light .foot__contact a:hover{ color:var(--lime-ink) }
+.t-light .btn--ghost:hover,
+.t-light .btn--ghost-d:hover{ border-color:var(--lime-ink) }
+.t-light .make-col h3{ border-bottom-color:var(--lime) }
+
+/* ── 04 · NAV ─────────────────────────────────────────────────────── */
+.t-light .nav{ background:rgba(255,255,255,.84) }
+.t-light .nav.is-scrolled{
+  background:rgba(255,255,255,.95);
+  box-shadow:0 8px 26px rgba(22,28,18,.07);
+}
+.t-light .nav__brand:hover img{ filter:drop-shadow(0 3px 10px rgba(86,114,11,.28)) }
+.t-light .nav__menu{ background:#fff }
+
+/* ── 05 · HERO ─────────────────────────────────────────────────────
+   Same shop photo, inverted treatment: the dark theme dimmed it to sit
+   type on top, so this one leaves it alone and washes it instead. The
+   wash is near-opaque under the copy and clears by the halfway mark, so
+   the bays, lifts and wall stripe still read as a photograph — that
+   right-hand third is the only thing telling you it's a real shop. */
+.t-light .hero__bg{ filter:saturate(.94) contrast(1.02) }
+.t-light .hero__bg::after{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.5) 0%, rgba(255,255,255,0) 22%,
+      rgba(255,255,255,0) 80%, #fff 100%),
+    linear-gradient(90deg, rgba(255,255,255,.96) 0%, rgba(255,255,255,.88) 26%,
+      rgba(255,255,255,.34) 54%, rgba(255,255,255,.05) 80%,
+      rgba(255,255,255,0) 100%);
+}
+.t-light .hero::after{
+  background:
+    radial-gradient(120% 78% at 52% 42%, transparent 56%, rgba(255,255,255,.26) 100%),
+    radial-gradient(60% 55% at 2% 104%, rgba(181,211,39,.14), transparent 62%);
+}
+.t-light .hero h1{ color:var(--ink); text-shadow:0 1px 24px rgba(255,255,255,.8) }
+.t-light .hero .lede{ color:var(--steel) }
+.t-light .scroll-cue__line{ background:rgba(22,24,26,.14) }
+.t-light .scroll-cue__line::after{
+  background:linear-gradient(var(--lime-ink), transparent);
+}
+
+/* the instrument — white glass instead of smoked */
+.t-light .gauge-card{
+  background:rgba(255,255,255,.74); border-color:var(--line-2);
+  box-shadow:var(--sh-4);
+}
+.t-light .gauge-card::before{
+  background:radial-gradient(closest-side, rgba(181,211,39,.34), transparent 72%);
+}
+.t-light .gauge-card.is-live:hover{
+  border-color:rgba(86,114,11,.36);
+  box-shadow:var(--sh-4), 0 0 34px rgba(181,211,39,.28);
+}
+.t-light .chip{ background:rgba(255,255,255,.7); color:var(--steel) }
+.t-light .chip--red b{ color:var(--red) }
+
+/* ── 06 · FACT STRIP ──────────────────────────────────────────────── */
+.t-light .strip{ border-block-color:var(--line-d) }
+
+/* ── 06b · WELCOME + VALUE PROPS ──────────────────────────────────
+   "Welcome," keeps its sheen, but the gradient now travels between two
+   readable olives instead of washing out to bright lime. */
+/* lime pools go muddy-yellow on paper long before they do on charcoal —
+   every one of them runs at roughly half the dark theme's strength */
+.t-light .welcome::before{
+  background:radial-gradient(closest-side, rgba(181,211,39,.13), transparent 70%);
+}
+.t-light .welcome__hi{
+  color:var(--lime-ink);
+  background:linear-gradient(100deg, var(--lime-ink) 20%, #7d9c10 38%,
+    var(--lime-ink) 56%) 0 0 / 250% 100% no-repeat text;
+}
+.t-light .prop::before{
+  border-color:rgba(86,114,11,.30); background:var(--lime-dim);
+}
+
+/* ── 06c · STATEMENT BANNER ───────────────────────────────────────
+   The engine bay drops back to a faint texture and the line is set in
+   ink — the airy counterpart to the dark version's cinema. */
+.t-light .statement{ background:var(--paper) }
+.t-light .statement__bg{
+  filter:brightness(1.3) saturate(.42) contrast(.88); opacity:.17;
+}
+.t-light .statement__bg::after{
+  background:linear-gradient(180deg, #fff 0%, rgba(255,255,255,.4) 30%,
+    rgba(255,255,255,.4) 70%, #fff 100%);
+}
+.t-light .statement__in::after{
+  background:linear-gradient(90deg, transparent, var(--lime-ink), transparent);
+}
+.t-light .statement h2{ color:var(--ink); text-shadow:none }
+
+/* ── 07 · SERVICE TILES → PHOTO CARDS ─────────────────────────────
+   The one structural change: the centred rounded-square tiles become
+   uniform left-aligned photo cards, the layout 603mtech uses for its
+   service categories. Markup is unchanged. */
+.t-light .discs{ gap:clamp(20px, 2.4vw, 26px) }
+.t-light .disc{
+  justify-items:stretch; text-align:left; gap:12px;
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:18px; padding-bottom:24px; overflow:hidden;
+  box-shadow:var(--sh-2);
+  /* photo · title · copy · button — the copy row takes up the slack so
+     the buttons line up across a row even when a title wraps to two */
+  grid-template-rows:auto auto 1fr auto;
+}
+.t-light .disc::before{
+  inset:-16px -12px; border-radius:26px;
+  background:radial-gradient(240px circle at var(--mx,50%) var(--my,30%),
+    rgba(181,211,39,.30), transparent 68%);
+}
+.t-light .disc:hover{
+  transform:translateY(-6px); border-color:rgba(86,114,11,.28);
+  box-shadow:var(--sh-3);
+}
+.t-light .disc__img{
+  width:100%; aspect-ratio:16/10; border:0; border-radius:0;
+  box-shadow:none; border-bottom:1px solid var(--line);
+}
+.t-light .disc__img img{ filter:saturate(.96) }
+.t-light .disc:hover .disc__img{ border-color:var(--line); box-shadow:none }
+.t-light .disc__img::before{
+  background:linear-gradient(180deg, transparent 42%, rgba(181,211,39,.30) 100%);
+}
+/* the job-card number stays put instead of arriving on hover */
+.t-light .disc__img::after{
+  opacity:1; transform:none; left:12px; top:12px;
+  background:rgba(255,255,255,.94); border-color:rgba(86,114,11,.24);
+  color:var(--lime-ink); box-shadow:var(--sh-1);
+}
+.t-light .disc > h3{ margin:14px 22px 0; max-width:none; font-size:1rem }
+.t-light .disc > p{ margin-inline:22px; max-width:34ch }
+.t-light .disc > .btn{ justify-self:start; margin:4px 22px 0 }
+
+.t-light .cards__note{ background:var(--panel); box-shadow:var(--sh-1) }
+.t-light .cards__note:hover{
+  border-color:rgba(86,114,11,.34);
+  background:color-mix(in srgb, #fff 92%, var(--lime));
+}
+
+/* ── 08 · THE SHOP / FIGURES ──────────────────────────────────────── */
+.t-light .shop{ background:var(--paper) }
+.t-light .shop__wide{ box-shadow:var(--sh-2) }
+.t-light .shop__wide:hover{ box-shadow:var(--sh-3) }
+.t-light .figure{ box-shadow:var(--sh-1) }
+.t-light .figure:hover{
+  border-color:rgba(86,114,11,.26); box-shadow:var(--sh-3);
+}
+
+/* ── 08b · THE PROCESS ────────────────────────────────────────────
+   White glass step cards over the Raptor photo, which keeps its own
+   contrast — the cards sit on it rather than glowing out of it. */
+.t-light .flow{ background:var(--paper-2) }
+.t-light .fcard{
+  background:rgba(255,255,255,.86); border-color:rgba(22,24,26,.12);
+  box-shadow:var(--sh-3);
+}
+.t-light .fcard:hover{
+  background:rgba(255,255,255,.97); border-color:rgba(86,114,11,.30);
+  box-shadow:var(--sh-4);
+}
+
+/* ── 09 · WORK GALLERY ────────────────────────────────────────────── */
+.t-light .shot{ box-shadow:var(--sh-1) }
+.t-light .shot:hover{
+  border-color:rgba(86,114,11,.26); box-shadow:var(--sh-3);
+}
+.t-light .shot__frame::after{
+  background:linear-gradient(180deg, rgba(22,24,26,.34) 0%, transparent 45%);
+}
+
+/* the lightbox stays dark on purpose — a lit room around a photograph.
+   Its ink has to be re-pinned, since --bone is now near-black. */
+.t-light .lb__cap b{ color:#f0f2ec }
+.t-light .lb__cap span{ color:var(--lime) }
+.t-light .lb__count{ color:#8d958d }
+.t-light .lb__count b{ color:var(--lime) }
+.t-light .lb__foot{ color:#8d958d }
+.t-light .lb__foot kbd{ border-color:rgba(238,241,235,.16); color:#a9b1a8 }
+.t-light .lb__btn{
+  border-color:rgba(238,241,235,.22); background:rgba(10,11,14,.6); color:#f0f2ec;
+}
+.t-light .lb__btn:hover{
+  background:var(--lime); border-color:var(--lime); color:#171a05;
+}
+.t-light .lb__fig img{ border-color:rgba(238,241,235,.14) }
+
+/* ── 09b · MAKES ──────────────────────────────────────────────────── */
+.t-light .makes{ background:var(--paper-2) }
+
+/* ── 09c · REVIEWS BAND ───────────────────────────────────────────── */
+.t-light .revband::before{
+  background:radial-gradient(70% 130% at 50% 128%, rgba(181,211,39,.17),
+    transparent 66%);
+}
+
+/* ── 10 · VISIT / BOOK ────────────────────────────────────────────
+   The booking card is the page's last ask, so it goes white-on-grey
+   with a shadow — lifted off the band instead of sunk into it. */
+.t-light .visit{ background:var(--paper-2) }
+.t-light .book-card{
+  background:var(--panel); border-color:var(--line); box-shadow:var(--sh-3);
+}
+.t-light .visit-card{ box-shadow:var(--sh-2) }
+
+/* ── 11 · BUTTONS + FLOATING PILL ─────────────────────────────────── */
+.t-light .btn--primary{ box-shadow:0 8px 22px rgba(140,170,20,.24) }
+.t-light .btn--primary:hover{ box-shadow:0 14px 34px rgba(140,170,20,.38) }
+.t-light .btn--ghost:hover{ box-shadow:0 10px 24px rgba(22,28,18,.10) }
+.t-light .btn--ghost, .t-light .btn--ghost-d{ color:var(--ink) }
+/* the sweep across a ghost button was a white glint — needs to darken */
+.t-light .btn--ghost::after, .t-light .btn--ghost-d::after{
+  background:linear-gradient(115deg, transparent 34%,
+    rgba(86,114,11,.10) 50%, transparent 66%);
+}
+.t-light .wa-fab{ box-shadow:0 14px 36px rgba(22,28,18,.20) }
+.t-light .wa-fab:hover{
+  box-shadow:0 18px 44px rgba(22,28,18,.26), 0 0 26px rgba(181,211,39,.5);
+}
+
+/* ── 12 · FOOTER ──────────────────────────────────────────────────── */
+.t-light footer{ color:var(--steel) }
+
+/* ── 13 · RESPONSIVE FIX-UPS ──────────────────────────────────────── */
+@media (max-width: 760px){
+  /* the mobile hero has no room for a side wash — go top-down instead */
+  .t-light .hero__bg::after{
+    background:linear-gradient(180deg, rgba(255,255,255,.9) 0%,
+      rgba(255,255,255,.72) 45%, #fff 100%);
+  }
+}
