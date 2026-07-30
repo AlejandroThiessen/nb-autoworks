@@ -161,13 +161,32 @@
       </div>
     </div>
 
+    <!-- Two instruments on one card: the tach turns over to a dyno pull
+         and back on a timer. Both faces are drawn by site.js §08. -->
     <div class="gauge-card" data-reveal style="--rd:180ms">
-      <svg id="tach" viewBox="0 0 440 440" role="img"
-           aria-label="Animated tachometer — the engine starts, revs out and settles to idle"></svg>
+      <div class="gauge-stage" id="gaugeStage">
+        <div class="gauge-flip" id="gaugeFlip">
+          <div class="inst inst--tach">
+            <svg id="tach" viewBox="0 0 440 440" role="img"
+                 aria-label="Animated tachometer — the engine starts, revs out and settles to idle"></svg>
+          </div>
+          <div class="inst inst--dyno" aria-hidden="true">
+            <svg id="dyno" viewBox="0 0 440 440" role="img"
+                 aria-label="Animated dyno chart — a sample power and torque pull plotted against engine speed"></svg>
+          </div>
+        </div>
+      </div>
       <div class="gauge-card__chips" aria-hidden="true">
-        <span class="chip">OIL <b>92°C</b></span>
-        <span class="chip">RPM <b id="rpmOut">0000</b></span>
-        <span class="chip chip--red">REDLINE <b>7.0K</b></span>
+        <span class="chipset chipset--tach is-on">
+          <span class="chip">OIL <b>92°C</b></span>
+          <span class="chip">RPM <b id="rpmOut">0000</b></span>
+          <span class="chip chip--red">REDLINE <b>7.0K</b></span>
+        </span>
+        <span class="chipset chipset--dyno">
+          <span class="chip">HP <b id="hpOut">000</b></span>
+          <span class="chip">LB-FT <b id="tqOut">000</b></span>
+          <span class="chip chip--red">RPM <b id="dynoRpm">0000</b></span>
+        </span>
       </div>
     </div>
   </div>
