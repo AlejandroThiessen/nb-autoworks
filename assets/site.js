@@ -391,8 +391,10 @@ safe(function tach(){
   var C = 220, A0 = 135, SWEEP = 270, MAX = 8, RED = 7;
 
   /* The dial is drawn, not styled, so it carries its own palette: a
-     smoked instrument on the dark pages, a white-faced one wherever the
-     light theme is on (html.t-light — the homepage). */
+     smoked instrument on the dark theme, a white-faced one wherever
+     html.t-light is on — which, since the light makeover, is the whole
+     site. The dark half stays for the same reason light.css is a layer:
+     dropping the class puts the showroom back. */
   var LIGHT = document.documentElement.classList.contains('t-light');
   var P = LIGHT ? {
     face:'#fdfdfa',  faceRing:'rgba(22,24,26,.07)',
@@ -404,7 +406,9 @@ safe(function tach(){
     num:'#4e564e',   numRed:'#c4241a',
     ledOff:'#e4e7dd', ledRing:'rgba(22,24,26,.12)',
     ledLime:'#8fb213', amber:'#e08a00', ledRed:'#e0261a',
-    label1:'#6e766f', label2:'#7a827c', label3:'#868e88',
+    /* legends run 11 → 9 → 7.5px, so the contrast has to run the other
+       way; the first cut of these faded out as they got smaller */
+    label1:'#6e766f', label2:'#6b736d', label3:'#666e68',
     needle:'#6d8d0b', needleGlow:'rgba(109,141,11,.32)',
     hub:'#ffffff',   hubRing:'rgba(22,24,26,.24)', hubDot:'#6d8d0b',
     red:'#d0281c',   redGlow:'rgba(208,40,28,.26)'
