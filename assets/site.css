@@ -412,9 +412,52 @@ body.menu-open{ overflow:hidden }
 .gauge-card.is-live{ cursor:pointer }
 .gauge-card.is-live:hover{ border-color:rgba(181,211,39,.42);
   box-shadow:0 34px 90px rgba(0,0,0,.5), 0 0 40px rgba(181,211,39,.10) }
-#tach{ position:relative; width:100%; height:auto }
-.gauge-card__chips{ position:relative; display:flex; gap:8px; flex-wrap:wrap;
-  justify-content:center; margin-top:10px }
+/* ── the two faces ────────────────────────────────────────────────
+   The tach and the dyno are one physical instrument turning over, so
+   the swap is a rotateY on a preserve-3d wrapper rather than a
+   crossfade. The card's own pointer tilt stays on .gauge-card and the
+   two transforms compose. */
+.gauge-stage{ position:relative; perspective:1500px }
+.gauge-flip{ position:relative; transform-style:preserve-3d;
+  transition:transform 1.05s var(--e-expo) }
+.gauge-flip.is-dyno{ transform:rotateY(180deg) }
+.inst{ backface-visibility:hidden; -webkit-backface-visibility:hidden }
+.inst svg{ position:relative; display:block; width:100%; height:auto }
+.inst--dyno{ position:absolute; inset:0; transform:rotateY(180deg) }
+/* belt and braces: JS parks the face that finished turning away. If a
+   browser flattens the 3D context — Safari can, and this card carries a
+   backdrop-filter, which is exactly the combination that trips it — the
+   two faces would otherwise sit on top of each other. */
+.inst.is-off{ visibility:hidden }
+
+/* a lime edge-light that runs across the card on the turn */
+.gauge-stage::after{
+  content:""; position:absolute; inset:-4% -2%; z-index:3; pointer-events:none;
+  border-radius:20px; opacity:0;
+  background:linear-gradient(115deg, transparent 40%, var(--lime-glow) 50%,
+    transparent 60%);
+}
+.gauge-stage.is-turning::after{ animation:instSweep 1.05s var(--e-expo) }
+@keyframes instSweep{
+  0%  { opacity:0;   transform:translateX(-45%) }
+  45% { opacity:.9 }
+  100%{ opacity:0;   transform:translateX(45%) }
+}
+
+/* each face brings its own readouts; they cross over at the halfway
+   point of the turn, when the card is edge-on and nothing is legible */
+.gauge-card__chips{ position:relative; display:grid; margin-top:10px }
+.chipset{
+  grid-area:1/1; display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
+  opacity:0; visibility:hidden; transform:translateY(7px);
+  transition:opacity .26s ease, transform .4s var(--e-out), visibility 0s .26s;
+}
+.chipset.is-on{
+  opacity:1; visibility:visible; transform:none;
+  transition:opacity .34s ease .5s, transform .44s var(--e-out) .5s;
+}
+.gauge-card__hint span{ display:none }
+.gauge-card__hint span.is-on{ display:inline }
 .chip{
   font:400 10.5px/1 var(--mono); letter-spacing:.12em;
   padding:9px 12px; border:1px solid var(--line-d); border-radius:999px;
@@ -1237,7 +1280,11 @@ footer nav a:hover, .foot__contact a:hover{ color:var(--lime); transform:transla
   .nav, .nav__menu, .burger svg{ transition:none }
   .hero__bg, .ticker__track, .welcome__hi, .eyebrow::before,
   .scroll-cue__line::after, .wa-fab.is-show::after, .book-card::before,
-  .js .nav__menu.is-open > *, .js .shot.is-back{ animation:none }
+  .js .nav__menu.is-open > *, .js .shot.is-back,
+  .gauge-stage.is-turning::after{ animation:none }
+  /* the instrument card stops turning entirely — JS also skips the
+     rotation, so the tach simply stays put */
+  .gauge-flip, .chipset{ transition:none }
   .js .sec-title::after, .js .fcard::before,
   .js .statement__in::after{ transform:none; transition:none }
   .shot__zoom, .disc__img::after{ transition:none }

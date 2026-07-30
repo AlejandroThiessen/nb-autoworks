@@ -4,7 +4,7 @@
    01 helpers          05 scroll reveal
    02 nav              06 pointer effects (spotlight · torch · tilt)
    03 language toggle  07 gallery lightbox + filters
-   04 scroll engine    08 hero tachometer (home)
+   04 scroll engine    08 hero instruments — tach + dyno (home)
    Everything below degrades to a plain, readable page without JS, and
    every motion path is switched off under prefers-reduced-motion.
    ════════════════════════════════════════════════════════════════════ */
@@ -405,19 +405,25 @@ safe(function gallery(){
   });
 });
 
-/* ── 08 · hero tachometer — cold start, rev, settle to idle ──────── */
-safe(function tach(){
-  var svg = $('#tach'); if (!svg) return;
-  var out = $('#rpmOut');
-  var card = svg.closest('.gauge-card');
+/* ── 08 · hero instruments — tachometer + dyno pull ──────────────────
+   One card with two faces. The tach cold-starts, revs out and settles to
+   idle; a timer then turns the card over to a dyno pull, which draws its
+   curves and holds; then it turns back. Coming back, the tach picks up
+   where it left off — at idle. The start sequence is a one-time thing,
+   so the engine never re-revs on its own; only a tap does that.
 
-  var C = 220, A0 = 135, SWEEP = 270, MAX = 8, RED = 7;
+   Both faces are drawn rather than styled, so they share a palette:
+   a smoked instrument on the dark theme, white-faced wherever
+   html.t-light is on — which, since the light makeover, is the whole
+   site. The dark half stays for the same reason light.css is a layer:
+   dropping the class puts the showroom back. */
+safe(function instruments(){
+  var tachSvg = $('#tach'); if (!tachSvg) return;
+  var dynoSvg = $('#dyno');
+  var stage   = $('#gaugeStage');
+  var flipEl  = $('#gaugeFlip');
+  var card    = tachSvg.closest('.gauge-card');
 
-  /* The dial is drawn, not styled, so it carries its own palette: a
-     smoked instrument on the dark theme, a white-faced one wherever
-     html.t-light is on — which, since the light makeover, is the whole
-     site. The dark half stays for the same reason light.css is a layer:
-     dropping the class puts the showroom back. */
   var LIGHT = document.documentElement.classList.contains('t-light');
   var P = LIGHT ? {
     face:'#fdfdfa',  faceRing:'rgba(22,24,26,.07)',
@@ -434,7 +440,11 @@ safe(function tach(){
     label1:'#6e766f', label2:'#6b736d', label3:'#666e68',
     needle:'#6d8d0b', needleGlow:'rgba(109,141,11,.32)',
     hub:'#ffffff',   hubRing:'rgba(22,24,26,.24)', hubDot:'#6d8d0b',
-    red:'#d0281c',   redGlow:'rgba(208,40,28,.26)'
+    red:'#d0281c',   redGlow:'rgba(208,40,28,.26)',
+    /* dyno face */
+    hp:'#6d8d0b',    tq:'#2b2f2b',
+    grid:'rgba(22,24,26,.09)', axis:'rgba(22,24,26,.26)',
+    plot:'rgba(22,24,26,.022)', cursor:'rgba(109,141,11,.34)'
   } : {
     face:null,       faceRing:null,
     track:'rgba(238,241,235,.07)',
@@ -448,17 +458,20 @@ safe(function tach(){
     label1:'#7f877f', label2:'#8d958d', label3:'#737b73',
     needle:'#b5d327', needleGlow:'rgba(139,166,7,.45)',
     hub:'#0a0b0e',   hubRing:'rgba(238,241,235,.28)', hubDot:'#b5d327',
-    red:'#ff4a3e',   redGlow:'rgba(255,59,48,.30)'
+    red:'#ff4a3e',   redGlow:'rgba(255,59,48,.30)',
+    hp:'#b5d327',    tq:'#e9ece4',
+    grid:'rgba(238,241,235,.08)', axis:'rgba(238,241,235,.22)',
+    plot:'rgba(238,241,235,.022)', cursor:'rgba(181,211,39,.4)'
   };
 
-  function mk(name, attrs, parent){
+  function mk(root, name, attrs, parent){
     var e = document.createElementNS(NS, name);
     for (var k in attrs) e.setAttribute(k, attrs[k]);
-    (parent || svg).appendChild(e);
+    (parent || root).appendChild(e);
     return e;
   }
-  function txt(x, y, str, size, fill, extra){
-    var t = mk('text', {
+  function txt(root, x, y, str, size, fill, extra){
+    var t = mk(root, 'text', {
       x: x, y: y, fill: fill, 'font-size': size, 'text-anchor': 'middle',
       'font-family': "'IBM Plex Mono', ui-monospace, monospace"
     });
@@ -466,165 +479,491 @@ safe(function tach(){
     t.textContent = str;
     return t;
   }
-  function ang(v){ return A0 + (v / MAX) * SWEEP; }
-  function pt(r, a){
-    var rad = a * Math.PI / 180;
-    return [C + r * Math.cos(rad), C + r * Math.sin(rad)];
-  }
-  function arc(r, a1, a2, attrs){
-    var p1 = pt(r, a1), p2 = pt(r, a2);
-    var large = (a2 - a1) > 180 ? 1 : 0;
-    attrs.d = 'M' + p1[0] + ' ' + p1[1] + ' A' + r + ' ' + r + ' 0 ' + large + ' 1 ' + p2[0] + ' ' + p2[1];
-    attrs.fill = 'none';
-    return mk('path', attrs);
-  }
   function easeInOut(t){ return t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3)/2; }
   function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
 
-  /* a printed dial face, so the light theme reads as a white instrument
-     rather than type floating on the card. Drawn first — everything
-     below lands on top of it. */
-  if (P.face){
-    mk('circle', { cx: C, cy: C, r: 201, fill: P.face, stroke: P.faceRing });
-    mk('circle', { cx: C, cy: C, r: 168, fill: 'none', stroke: P.faceRing });
-  }
+  /* ══ 08a · the tachometer ═══════════════════════════════════════ */
+  function buildTach(){
+    var svg = tachSvg, out = $('#rpmOut');
+    var C = 220, A0 = 135, SWEEP = 270, MAX = 8, RED = 7;
 
-  /* outer power ring — sweeps up with the needle */
-  var PR = 205, PLEN = 2 * Math.PI * PR * (SWEEP / 360);
-  arc(PR, A0, A0 + SWEEP, { stroke: P.track, 'stroke-width': 6,
-      'stroke-linecap': 'round' });
-  var power = arc(PR, A0, A0 + SWEEP, {
-    stroke: P.arc, 'stroke-width': 6, 'stroke-linecap': 'round',
-    'stroke-dasharray': PLEN, 'stroke-dashoffset': PLEN, opacity: .8,
-    style: 'filter:drop-shadow(0 0 7px ' + P.arcGlow + ')'
-  });
+    function ang(v){ return A0 + (v / MAX) * SWEEP; }
+    function pt(r, a){
+      var rad = a * Math.PI / 180;
+      return [C + r * Math.cos(rad), C + r * Math.sin(rad)];
+    }
+    function arc(r, a1, a2, attrs){
+      var p1 = pt(r, a1), p2 = pt(r, a2);
+      var large = (a2 - a1) > 180 ? 1 : 0;
+      attrs.d = 'M' + p1[0] + ' ' + p1[1] + ' A' + r + ' ' + r + ' 0 ' + large + ' 1 ' + p2[0] + ' ' + p2[1];
+      attrs.fill = 'none';
+      return mk(svg, 'path', attrs);
+    }
 
-  /* dial rings — the sweep, then the redline over it */
-  arc(196, A0, A0 + SWEEP, { stroke: P.ring, 'stroke-width': 1 });
-  arc(196, ang(RED), A0 + SWEEP, { stroke: P.red, 'stroke-width': 3,
-      style: 'filter:drop-shadow(0 0 6px ' + P.redGlow + ')' });
+    /* a printed dial face, so the light theme reads as a white
+       instrument rather than type floating on the card. Drawn first —
+       everything below lands on top of it. */
+    if (P.face){
+      mk(svg, 'circle', { cx: C, cy: C, r: 201, fill: P.face, stroke: P.faceRing });
+      mk(svg, 'circle', { cx: C, cy: C, r: 168, fill: 'none', stroke: P.faceRing });
+    }
 
-  /* ticks — minor every 0.2, major on the whole numbers */
-  for (var v = 0; v <= MAX * 5; v++){
-    var val = v / 5, a = ang(val);
-    var isMajor = (v % 5 === 0);
-    var p1 = pt(isMajor ? 176 : 183, a), p2 = pt(193, a);
-    mk('line', {
-      x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1],
-      stroke: isMajor ? (val >= RED ? P.tickMajRed : P.tickMaj)
-                      : (val >= RED ? P.tickMinRed : P.tickMin),
-      'stroke-width': isMajor ? 2 : 1
+    /* outer power ring — sweeps up with the needle */
+    var PR = 205, PLEN = 2 * Math.PI * PR * (SWEEP / 360);
+    arc(PR, A0, A0 + SWEEP, { stroke: P.track, 'stroke-width': 6,
+        'stroke-linecap': 'round' });
+    var power = arc(PR, A0, A0 + SWEEP, {
+      stroke: P.arc, 'stroke-width': 6, 'stroke-linecap': 'round',
+      'stroke-dasharray': PLEN, 'stroke-dashoffset': PLEN, opacity: .8,
+      style: 'filter:drop-shadow(0 0 7px ' + P.arcGlow + ')'
     });
-  }
 
-  /* numerals */
-  for (var n = 0; n <= MAX; n++){
-    var p = pt(150, ang(n));
-    txt(p[0], p[1], n, 23, n >= RED ? P.numRed : P.num,
-        { 'dominant-baseline': 'central', 'font-weight': 500 });
-  }
+    /* dial rings — the sweep, then the redline over it */
+    arc(196, A0, A0 + SWEEP, { stroke: P.ring, 'stroke-width': 1 });
+    arc(196, ang(RED), A0 + SWEEP, { stroke: P.red, 'stroke-width': 3,
+        style: 'filter:drop-shadow(0 0 6px ' + P.redGlow + ')' });
 
-  /* shift lights — the row that lights up on the way to the limiter */
-  var LEDS = 7, leds = [];
-  for (var i = 0; i < LEDS; i++){
-    leds.push(mk('circle', {
-      cx: C + (i - (LEDS - 1) / 2) * 20, cy: C - 108, r: 5,
-      fill: P.ledOff, stroke: P.ledRing
-    }));
-  }
-  function ledColor(i){ return i < 3 ? P.ledLime : (i < 5 ? P.amber : P.ledRed); }
-  function setLeds(v, ts){
-    var over = v >= RED;
-    var flash = over && Math.floor(ts / 90) % 2 === 0;
+    /* ticks — minor every 0.2, major on the whole numbers */
+    for (var v = 0; v <= MAX * 5; v++){
+      var val = v / 5, a = ang(val);
+      var isMajor = (v % 5 === 0);
+      var p1 = pt(isMajor ? 176 : 183, a), p2 = pt(193, a);
+      mk(svg, 'line', {
+        x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1],
+        stroke: isMajor ? (val >= RED ? P.tickMajRed : P.tickMaj)
+                        : (val >= RED ? P.tickMinRed : P.tickMin),
+        'stroke-width': isMajor ? 2 : 1
+      });
+    }
+
+    /* numerals */
+    for (var n = 0; n <= MAX; n++){
+      var p = pt(150, ang(n));
+      txt(svg, p[0], p[1], n, 23, n >= RED ? P.numRed : P.num,
+          { 'dominant-baseline': 'central', 'font-weight': 500 });
+    }
+
+    /* shift lights — the row that lights up on the way to the limiter */
+    var LEDS = 7, leds = [];
     for (var i = 0; i < LEDS; i++){
-      var on = over ? flash : v >= 3 + i * (RED - 3) / LEDS;
-      leds[i].setAttribute('fill', on ? ledColor(i) : P.ledOff);
-      leds[i].setAttribute('style', on
-        ? 'filter:drop-shadow(0 0 6px ' + ledColor(i) + ')' : '');
+      leds.push(mk(svg, 'circle', {
+        cx: C + (i - (LEDS - 1) / 2) * 20, cy: C - 108, r: 5,
+        fill: P.ledOff, stroke: P.ledRing
+      }));
     }
-  }
-
-  txt(C, C + 64, '×1000 RPM', 11, P.label1, { 'letter-spacing': '2' });
-  txt(C, C + 84, 'NB AUTOWORKS', 9, P.label2, { 'letter-spacing': '3' });
-  txt(C, C + 100, 'CAMPO 4 · CHIH.', 7.5, P.label3, { 'letter-spacing': '3' });
-
-  /* needle */
-  var g = mk('g', { style: 'filter:drop-shadow(0 0 6px ' + P.needleGlow + ')' });
-  mk('line', { x1: C - 26, y1: C, x2: C + 158, y2: C, stroke: P.needle,
-      'stroke-width': 3.5 }, g);
-  mk('circle', { cx: C, cy: C, r: 11, fill: P.hub, stroke: P.hubRing });
-  mk('circle', { cx: C, cy: C, r: 3.2, fill: P.hubDot });
-
-  var IDLE = 0.85, PEAK = 6.9;
-  function setV(v, ts){
-    g.setAttribute('transform', 'rotate(' + ang(v) + ' ' + C + ' ' + C + ')');
-    power.setAttribute('stroke-dashoffset', PLEN * (1 - v / MAX));
-    setLeds(v, ts || 0);
-    if (out){
-      var rpm = Math.max(0, Math.round(v * 100) * 10);
-      out.textContent = ('0000' + rpm).slice(-4);
-    }
-  }
-  setV(0);
-  if (RM){ setV(IDLE); return; }
-
-  /* start sequence: crank blip → idle → rev to 6.9 → fall with
-     a little undershoot → idle flutter, forever */
-  var SEQ = [
-    { d: 350, from: 0,    to: 1.15, ease: easeOut   },   /* crank catch  */
-    { d: 300, from: 1.15, to: IDLE, ease: easeInOut },   /* settle       */
-    { d: 420, from: IDLE, to: IDLE, ease: easeOut   },   /* breathe      */
-    { d: 900, from: IDLE, to: PEAK, ease: easeInOut },   /* the rev      */
-    { d: 130, from: PEAK, to: PEAK, ease: easeOut   },   /* hang on it   */
-    { d: 850, from: PEAK, to: 0.72, ease: easeOut   },   /* fall past    */
-    { d: 320, from: 0.72, to: IDLE, ease: easeInOut }    /* recover      */
-  ];
-  var seq = SEQ, t0 = null, running = false, pending = false, mode = 'seq';
-
-  function loop(ts){
-    pending = false;
-    if (!running) return;
-    var done = true;
-    if (mode === 'seq'){
-      if (t0 === null) t0 = ts;
-      var t = ts - t0;
-      for (var i = 0; i < seq.length && done; i++){
-        var s = seq[i];
-        if (t < s.d){
-          setV(s.from + (s.to - s.from) * s.ease(t / s.d), ts);
-          done = false;
-        }
-        t -= s.d;
+    function ledColor(i){ return i < 3 ? P.ledLime : (i < 5 ? P.amber : P.ledRed); }
+    function setLeds(v, ts){
+      var over = v >= RED;
+      var flash = over && Math.floor(ts / 90) % 2 === 0;
+      for (var i = 0; i < LEDS; i++){
+        var on = over ? flash : v >= 3 + i * (RED - 3) / LEDS;
+        leds[i].setAttribute('fill', on ? ledColor(i) : P.ledOff);
+        leds[i].setAttribute('style', on
+          ? 'filter:drop-shadow(0 0 6px ' + ledColor(i) + ')' : '');
       }
-      if (done) mode = 'idle';
     }
-    /* gentle needle flutter around idle */
-    if (mode === 'idle')
-      setV(IDLE + 0.035 * Math.sin(ts / 140) + 0.02 * Math.sin(ts / 47 + 1.3), ts);
-    pending = true;
-    requestAnimationFrame(loop);
-  }
-  function start(){
-    running = true;
-    if (!pending){ pending = true; requestAnimationFrame(loop); }
+
+    txt(svg, C, C + 64, '×1000 RPM', 11, P.label1, { 'letter-spacing': '2' });
+    txt(svg, C, C + 84, 'NB AUTOWORKS', 9, P.label2, { 'letter-spacing': '3' });
+    txt(svg, C, C + 100, 'CAMPO 4 · CHIH.', 7.5, P.label3, { 'letter-spacing': '3' });
+
+    /* needle */
+    var g = mk(svg, 'g', { style: 'filter:drop-shadow(0 0 6px ' + P.needleGlow + ')' });
+    mk(svg, 'line', { x1: C - 26, y1: C, x2: C + 158, y2: C, stroke: P.needle,
+        'stroke-width': 3.5 }, g);
+    mk(svg, 'circle', { cx: C, cy: C, r: 11, fill: P.hub, stroke: P.hubRing });
+    mk(svg, 'circle', { cx: C, cy: C, r: 3.2, fill: P.hubDot });
+
+    var IDLE = 0.85, PEAK = 6.9;
+    function setV(v, ts){
+      g.setAttribute('transform', 'rotate(' + ang(v) + ' ' + C + ' ' + C + ')');
+      power.setAttribute('stroke-dashoffset', PLEN * (1 - v / MAX));
+      setLeds(v, ts || 0);
+      if (out){
+        var rpm = Math.max(0, Math.round(v * 100) * 10);
+        out.textContent = ('0000' + rpm).slice(-4);
+      }
+    }
+    setV(0);
+    if (RM){ setV(IDLE); return { show:function(){}, hide:function(){},
+                                  rev:function(){}, onScreen:function(){} }; }
+
+    /* start sequence: crank blip → idle → rev to 6.9 → fall with
+       a little undershoot → idle flutter, forever */
+    var SEQ = [
+      { d: 350, from: 0,    to: 1.15, ease: easeOut   },   /* crank catch  */
+      { d: 300, from: 1.15, to: IDLE, ease: easeInOut },   /* settle       */
+      { d: 420, from: IDLE, to: IDLE, ease: easeOut   },   /* breathe      */
+      { d: 900, from: IDLE, to: PEAK, ease: easeInOut },   /* the rev      */
+      { d: 130, from: PEAK, to: PEAK, ease: easeOut   },   /* hang on it   */
+      { d: 850, from: PEAK, to: 0.72, ease: easeOut   },   /* fall past    */
+      { d: 320, from: 0.72, to: IDLE, ease: easeInOut }    /* recover      */
+    ];
+    var seq = SEQ, t0 = null, running = false, pending = false, mode = 'seq';
+    var visible = true, onscreen = false, pausedAt = null;
+
+    function loop(ts){
+      pending = false;
+      if (!running) return;
+      /* a pause must not eat into the sequence — shift its clock by
+         however long we were stopped, or it jumps on the way back */
+      if (pausedAt !== null){
+        if (t0 !== null) t0 += ts - pausedAt;
+        pausedAt = null;
+      }
+      var done = true;
+      if (mode === 'seq'){
+        if (t0 === null) t0 = ts;
+        var t = ts - t0;
+        for (var i = 0; i < seq.length && done; i++){
+          var s = seq[i];
+          if (t < s.d){
+            setV(s.from + (s.to - s.from) * s.ease(t / s.d), ts);
+            done = false;
+          }
+          t -= s.d;
+        }
+        if (done) mode = 'idle';
+      }
+      /* gentle needle flutter around idle */
+      if (mode === 'idle')
+        setV(IDLE + 0.035 * Math.sin(ts / 140) + 0.02 * Math.sin(ts / 47 + 1.3), ts);
+      pending = true;
+      requestAnimationFrame(loop);
+    }
+    function sync(){
+      var want = visible && onscreen;
+      if (want === running) return;
+      running = want;
+      if (running){ if (!pending){ pending = true; requestAnimationFrame(loop); } }
+      else pausedAt = performance.now();
+    }
+
+    return {
+      show:     function(){ visible = true;  sync(); },
+      hide:     function(){ visible = false; sync(); },
+      onScreen: function(v){ onscreen = v;   sync(); },
+      /* the only way the engine revs a second time */
+      rev:      function(){ seq = SEQ.slice(3); mode = 'seq'; t0 = null;
+                            pausedAt = null; sync(); }
+    };
   }
 
-  /* the gauge only burns frames while it is actually on screen */
+  /* ══ 08b · the dyno pull ════════════════════════════════════════
+     A chassis-dyno plot of the same engine the tach is attached to:
+     torque against engine speed, with power derived from it. The two
+     curves therefore cross at 5252 rpm, exactly as they do on a real
+     sheet — that crossing is the giveaway that a dyno chart is honest
+     arithmetic and not a drawing.
+
+     The numbers are a SAMPLE, labelled as one on the face. Swap the
+     TQ array below for a real pull whenever the shop has one to show. */
+  function buildDyno(){
+    var svg = dynoSvg;
+    var hpOut = $('#hpOut'), tqOut = $('#tqOut'), rpmOut = $('#dynoRpm');
+
+    var R0 = 1000, R1 = 7000, YMAX = 700, STEP = 500;
+    var L = 56, RG = 416, T = 74, B = 344;
+    /* lb-ft every 500 rpm from 1000. The top end has to fall away
+       faster than the revs climb (steeper than tq/rpm per rpm) or power
+       never peaks — the first cut of this curve was still making more
+       horsepower at the limiter, which no real sheet does. */
+    var TQ = [382, 462, 523, 560, 579, 590, 596, 594, 571, 542, 505, 455, 396];
+
+    function X(r){ return L + (r - R0) / (R1 - R0) * (RG - L); }
+    function Y(v){ return B - (v / YMAX) * (B - T); }
+    /* Catmull-Rom through the control points — smooth, and it passes
+       through every measured value instead of averaging them away */
+    function tqAt(r){
+      var f = (r - R0) / STEP;
+      var i = Math.max(0, Math.min(TQ.length - 2, Math.floor(f)));
+      var t = f - i;
+      var p0 = TQ[Math.max(0, i - 1)], p1 = TQ[i],
+          p2 = TQ[i + 1], p3 = TQ[Math.min(TQ.length - 1, i + 2)];
+      return .5 * (2*p1 + (-p0 + p2)*t + (2*p0 - 5*p1 + 4*p2 - p3)*t*t +
+                   (-p0 + 3*p1 - 3*p2 + p3)*t*t*t);
+    }
+    function hpAt(r){ return tqAt(r) * r / 5252; }
+
+    /* find the peaks off the curve itself, so the callouts can never
+       drift away from what is actually drawn */
+    var pkHp = { v: 0, r: R0 }, pkTq = { v: 0, r: R0 };
+    for (var r = R0; r <= R1; r += 10){
+      var h = hpAt(r), q = tqAt(r);
+      if (h > pkHp.v){ pkHp = { v: h, r: r }; }
+      if (q > pkTq.v){ pkTq = { v: q, r: r }; }
+    }
+
+    /* face */
+    if (P.face) mk(svg, 'rect', { x: 0, y: 0, width: 440, height: 440, rx: 0,
+        fill: P.face, stroke: 'none' });
+    txt(svg, 220, 34, 'POWER & TORQUE', 12.5, P.label1,
+        { 'letter-spacing': '3.4', 'font-weight': 500 });
+    txt(svg, 220, 52, 'SAMPLE PULL · CHASSIS DYNO', 9, P.label3,
+        { 'letter-spacing': '2.6' });
+
+    mk(svg, 'rect', { x: L, y: T, width: RG - L, height: B - T, fill: P.plot,
+        stroke: 'none' });
+
+    /* grid + scales */
+    for (var gv = 0; gv <= 600; gv += 200){
+      mk(svg, 'line', { x1: L, y1: Y(gv), x2: RG, y2: Y(gv),
+          stroke: gv === 0 ? P.axis : P.grid, 'stroke-width': 1 });
+      txt(svg, L - 10, Y(gv), gv, 10, P.label3,
+          { 'text-anchor': 'end', 'dominant-baseline': 'central' });
+    }
+    for (var gr = R0; gr <= R1; gr += 1000){
+      mk(svg, 'line', { x1: X(gr), y1: T, x2: X(gr), y2: B,
+          stroke: gr === R0 ? P.axis : P.grid, 'stroke-width': 1 });
+      txt(svg, X(gr), B + 21, gr / 1000, 11.5, P.label2, { 'font-weight': 500 });
+    }
+    txt(svg, 220, B + 41, 'ENGINE SPEED  ×1000 RPM', 9, P.label3,
+        { 'letter-spacing': '2.4' });
+
+    /* the curves */
+    function pathFor(fn){
+      var d = '';
+      for (var r = R0; r <= R1; r += 40)
+        d += (d ? 'L' : 'M') + X(r).toFixed(1) + ' ' + Y(fn(r)).toFixed(1) + ' ';
+      return d;
+    }
+    var line = { fill: 'none', 'stroke-width': 3, 'stroke-linecap': 'round',
+                 'stroke-linejoin': 'round' };
+    function curve(fn, color, glow){
+      var a = {}; for (var k in line) a[k] = line[k];
+      a.d = pathFor(fn); a.stroke = color;
+      a.style = 'filter:drop-shadow(0 0 6px ' + glow + ')';
+      return mk(svg, 'path', a);
+    }
+    var tqPath = curve(tqAt, P.tq, 'transparent');
+    var hpPath = curve(hpAt, P.hp, P.arcGlow);
+
+    /* travelling read-out: a cursor down the plot and a dot on each
+       curve, so the pull reads as a machine measuring rather than two
+       lines appearing */
+    var cursor = mk(svg, 'line', { x1: L, y1: T, x2: L, y2: B,
+        stroke: P.cursor, 'stroke-width': 1.5, opacity: 0 });
+    var hpDot = mk(svg, 'circle', { cx: L, cy: B, r: 4.5, fill: P.hp, opacity: 0 });
+    var tqDot = mk(svg, 'circle', { cx: L, cy: B, r: 4.5, fill: P.tq, opacity: 0 });
+
+    /* peak callouts — held back until the run is over */
+    var marks = mk(svg, 'g', { opacity: 0,
+        style: 'transition:opacity .45s ease' });
+    function callout(pk, label, color, dy, anchor){
+      mk(svg, 'circle', { cx: X(pk.r), cy: Y(pk.v), r: 4, fill: color,
+          stroke: P.face || '#0a0b0e', 'stroke-width': 1.5 }, marks);
+      var tx = txt(svg, X(pk.r) + (anchor === 'end' ? -9 : 9), Y(pk.v) + dy,
+          Math.round(pk.v) + label, 10.5, color,
+          { 'text-anchor': anchor, 'font-weight': 500 });
+      marks.appendChild(tx);
+    }
+    callout(pkHp, ' HP',    P.hp, -10, 'end');
+    callout(pkTq, ' LB-FT', P.tq, -11, 'middle');
+
+    /* legend */
+    function key(x, color, label){
+      mk(svg, 'line', { x1: x, y1: 404, x2: x + 20, y2: 404, stroke: color,
+          'stroke-width': 3, 'stroke-linecap': 'round' });
+      var t = txt(svg, x + 26, 404, label, 10, P.label2,
+          { 'text-anchor': 'start', 'dominant-baseline': 'central',
+            'letter-spacing': '1.6' });
+      return t;
+    }
+    key(138, P.hp, 'HP');
+    key(228, P.tq, 'LB-FT');
+    txt(svg, 220, 428, 'NB AUTOWORKS · CAMPO 4', 8.5, P.label3,
+        { 'letter-spacing': '3' });
+
+    var hpLen = hpPath.getTotalLength ? hpPath.getTotalLength() : 0;
+    var tqLen = tqPath.getTotalLength ? tqPath.getTotalLength() : 0;
+    [[hpPath, hpLen], [tqPath, tqLen]].forEach(function(p){
+      p[0].setAttribute('stroke-dasharray', p[1]);
+      p[0].setAttribute('stroke-dashoffset', p[1]);
+    });
+
+    function chips(hp, tq, rpm){
+      if (hpOut) hpOut.textContent = ('000' + Math.round(hp)).slice(-3);
+      if (tqOut) tqOut.textContent = ('000' + Math.round(tq)).slice(-3);
+      if (rpmOut) rpmOut.textContent = ('0000' + (Math.round(rpm / 10) * 10)).slice(-4);
+    }
+
+    var raf = null, DUR = 2300;
+    function settle(){
+      hpPath.setAttribute('stroke-dashoffset', 0);
+      tqPath.setAttribute('stroke-dashoffset', 0);
+      cursor.setAttribute('opacity', 0);
+      hpDot.setAttribute('opacity', 0);
+      tqDot.setAttribute('opacity', 0);
+      marks.setAttribute('opacity', 1);
+      chips(pkHp.v, pkTq.v, pkHp.r);
+    }
+    if (RM){ settle(); return { play: settle, stop: function(){} }; }
+
+    function stop(){ if (raf){ cancelAnimationFrame(raf); raf = null; } }
+    function play(){
+      stop();
+      marks.setAttribute('opacity', 0);
+      cursor.setAttribute('opacity', 1);
+      hpDot.setAttribute('opacity', 1);
+      tqDot.setAttribute('opacity', 1);
+      chips(0, 0, R0);
+      var t0 = null;
+      raf = requestAnimationFrame(function step(ts){
+        if (t0 === null) t0 = ts;
+        var k = Math.min(1, (ts - t0) / DUR), e = easeOut(k);
+        hpPath.setAttribute('stroke-dashoffset', hpLen * (1 - e));
+        tqPath.setAttribute('stroke-dashoffset', tqLen * (1 - e));
+        var r = R0 + (R1 - R0) * e, x = X(r);
+        cursor.setAttribute('x1', x); cursor.setAttribute('x2', x);
+        hpDot.setAttribute('cx', x); hpDot.setAttribute('cy', Y(hpAt(r)));
+        tqDot.setAttribute('cx', x); tqDot.setAttribute('cy', Y(tqAt(r)));
+        chips(hpAt(r), tqAt(r), r);
+        if (k < 1){ raf = requestAnimationFrame(step); return; }
+        raf = null;
+        /* the tip catches up, the callouts land */
+        cursor.setAttribute('opacity', 0);
+        hpDot.setAttribute('opacity', 0);
+        tqDot.setAttribute('opacity', 0);
+        marks.setAttribute('opacity', 1);
+        chips(pkHp.v, pkTq.v, pkHp.r);
+      });
+    }
+    return { play: play, stop: stop };
+  }
+
+  /* ══ 08c · the turn ═════════════════════════════════════════════ */
+  var tach = buildTach();
+  var dyno = (dynoSvg && flipEl) ? buildDyno() : null;
+
+  /* the hint line belongs to the face, so each one is its own element:
+     applyLang rewrites the innerHTML of anything carrying data-es, and
+     would wipe a single line we were retitling from JS */
+  var hints = {};
+  if (card){
+    var hint = el('p', 'gauge-card__hint');
+    hints.tach = el('span', 'is-on', '<b>Tap</b> the gauge to rev it');
+    hints.tach.setAttribute('data-es', '<b>Toca</b> el tacómetro para acelerar');
+    hints.dyno = el('span', '', 'Power &amp; torque — <b>sample pull</b>');
+    hints.dyno.setAttribute('data-es', 'Potencia y par — <b>curva de muestra</b>');
+    hint.appendChild(hints.tach); hint.appendChild(hints.dyno);
+    card.appendChild(hint);
+  }
+
+  var faces = {
+    tach: { chips: $('.chipset--tach'), pane: $('.inst--tach') },
+    dyno: { chips: $('.chipset--dyno'), pane: $('.inst--dyno') }
+  };
+
+  /* no dyno face, no reduced motion, no flip — just the tach as before */
+  if (!dyno || RM){
+    tach.show();
+    if ('IntersectionObserver' in window){
+      new IntersectionObserver(function(e){ tach.onScreen(e[0].isIntersecting); },
+        { threshold: 0 }).observe(tachSvg);
+    } else tach.onScreen(true);
+    if (card && !RM){
+      card.classList.add('is-live');
+      card.addEventListener('click', function(){ tach.rev(); });
+    }
+    return;
+  }
+
+  var TACH_MS = 7200, DYNO_MS = 7800, TURN = 1050;
+  var face = 'tach', onscreen = false, held = false;
+  var timer = null, mid = null, park = null;
+
+  function later(fn, ms){ return setTimeout(fn, ms); }
+  function clearAll(){
+    if (timer){ clearTimeout(timer); timer = null; }
+    if (mid){ clearTimeout(mid); mid = null; }
+  }
+  /* the dyno starts parked; the first turn brings it round */
+  if (faces.dyno.pane) faces.dyno.pane.classList.add('is-off');
+  function schedule(ms){
+    if (timer) clearTimeout(timer);
+    timer = (onscreen && !held) ? later(turn, ms) : null;
+  }
+
+  function turn(){
+    face = (face === 'tach') ? 'dyno' : 'tach';
+    var to = faces[face], from = faces[face === 'tach' ? 'dyno' : 'tach'];
+
+    /* restart the edge-light even if it is mid-run */
+    if (stage){
+      stage.classList.remove('is-turning');
+      void stage.offsetWidth;
+      stage.classList.add('is-turning');
+    }
+    flipEl.classList.toggle('is-dyno', face === 'dyno');
+    if (to.chips)   to.chips.classList.add('is-on');
+    if (from.chips) from.chips.classList.remove('is-on');
+    if (to.pane)    to.pane.removeAttribute('aria-hidden');
+    if (from.pane)  from.pane.setAttribute('aria-hidden', 'true');
+    if (hints.tach){
+      hints.tach.classList.toggle('is-on', face === 'tach');
+      hints.dyno.classList.toggle('is-on', face === 'dyno');
+    }
+
+    /* both faces have to be present for the card to have two sides */
+    if (to.pane)   to.pane.classList.remove('is-off');
+    if (from.pane) from.pane.classList.remove('is-off');
+
+    if (mid) clearTimeout(mid);
+    mid = later(function(){
+      mid = null;
+      if (face === 'dyno'){
+        dyno.play();            /* starts as the face swings into view */
+        tach.hide();            /* …and the tach stops burning frames  */
+      } else {
+        /* back on the tach: it resumes at idle. The start sequence
+           already ran, so nothing re-revs — that is a tap only. */
+        tach.show();
+        dyno.stop();
+      }
+    }, TURN * .48);
+
+    if (park) clearTimeout(park);
+    park = later(function(){
+      park = null;
+      if (from.pane) from.pane.classList.add('is-off');
+    }, TURN + 40);
+
+    schedule(face === 'dyno' ? DYNO_MS : TACH_MS);
+  }
+
+  tach.show();
   if ('IntersectionObserver' in window){
     new IntersectionObserver(function(e){
-      if (e[0].isIntersecting) start(); else running = false;
-    }, { threshold: 0 }).observe(svg);
-  } else { start(); }
+      onscreen = e[0].isIntersecting;
+      tach.onScreen(onscreen && face === 'tach');
+      if (onscreen) schedule(face === 'dyno' ? DYNO_MS : TACH_MS);
+      else clearAll();
+    }, { threshold: 0 }).observe(card || tachSvg);
+  } else {
+    onscreen = true; tach.onScreen(true);
+    schedule(TACH_MS);
+  }
 
-  /* blip the throttle on demand */
+  /* hold the rotation while someone is actually reading the card */
   if (card){
     card.classList.add('is-live');
-    var hint = el('p', 'gauge-card__hint',
-      '<b>Tap</b> the gauge to rev it');
-    hint.setAttribute('data-es', '<b>Toca</b> el tacómetro para acelerar');
-    card.appendChild(hint);
+    ['pointerenter', 'focusin'].forEach(function(ev){
+      card.addEventListener(ev, function(){ held = true; clearAll(); });
+    });
+    ['pointerleave', 'focusout'].forEach(function(ev){
+      card.addEventListener(ev, function(){
+        held = false;
+        schedule(face === 'dyno' ? DYNO_MS : TACH_MS);
+      });
+    });
     card.addEventListener('click', function(){
-      seq = SEQ.slice(3); mode = 'seq'; t0 = null; start();
+      if (face === 'tach'){
+        tach.rev();
+        schedule(TACH_MS);      /* don't turn away mid-rev */
+      } else {
+        dyno.play();
+        schedule(DYNO_MS);
+      }
     });
   }
 });
