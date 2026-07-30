@@ -1,9 +1,10 @@
 /* ════════════════════════════════════════════════════════════════════
-   NB AUTOWORKS — LIGHT THEME · homepage only
+   NB AUTOWORKS — LIGHT THEME · all pages
    ─────────────────────────────────────────────────────────────────────
-   Loaded by index.html AFTER site.css, and only there. Every rule is
-   scoped to html.t-light, so the other pages keep the dark showroom
-   look untouched. Remove the class + the <link> to revert the homepage.
+   Loaded by every page AFTER site.css. Every rule is scoped to
+   html.t-light, so site.css stays a complete dark showroom theme on its
+   own — drop the class + the <link> from a page to send it back there.
+   §01–13 cover the homepage; §14–21 cover the five subpages.
 
    HOW THE COLOUR WORKS
      · Most of the page flips for free — site.css is token-driven, so
@@ -37,8 +38,12 @@ html.t-light{
 
   /* ink — dark on light */
   --ink:     #16181a;
-  --steel:   #5d6560;   /* body copy      — 6.0:1 on white */
-  --steel-2: #6e766f;   /* micro-labels   — 4.7:1 on white */
+  --steel:   #5d6560;   /* body copy    — 6.0:1 white · 5.3:1 grey bands */
+  /* micro-labels: 11px mono, and they land as often on the pale grey
+     bands (--dark / --paper-2) as on white. 4.7:1 on white was only
+     4.1:1 there, so this is cut to clear 4.5:1 against the WORST of the
+     two — the footer strip — rather than against paper. */
+  --steel-2: #676f68;   /* 5.2:1 white · 4.6:1 grey bands */
   --bone:    #16181a;   /* "brightest" ink is now the darkest */
 
   /* accent — the lime stays the fill, olive carries the type */
@@ -96,6 +101,10 @@ html.t-light{
 }
 .t-light .nav__brand:hover img{ filter:drop-shadow(0 3px 10px rgba(86,114,11,.28)) }
 .t-light .nav__menu{ background:#fff }
+/* the EN/ES divider was drawn with the hairline token — at 20% ink on
+   paper it read as a smudge between the two labels */
+.t-light .langbtn__sep{ color:var(--steel-2) }
+.t-light .langbtn:hover{ border-color:var(--ink) }
 
 /* ── 05 · HERO ─────────────────────────────────────────────────────
    Same shop photo, inverted treatment: the dark theme dimmed it to sit
@@ -306,11 +315,120 @@ html.t-light{
 /* ── 12 · FOOTER ──────────────────────────────────────────────────── */
 .t-light footer{ color:var(--steel) }
 
-/* ── 13 · RESPONSIVE FIX-UPS ──────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════════
+   §14–21 · THE FIVE SUBPAGES
+   Same rule as the homepage: the tokens do most of the work, and what
+   follows is only the places site.css hard-codes a dark value, uses
+   bright lime as small type, or leans on a shadow that needs re-cutting
+   for paper.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── 14 · SUBPAGE HERO ────────────────────────────────────────────
+   The dark version sank the shop photo to a 22% ghost behind a charcoal
+   wash. On paper that just reads as dirt, so the photo is brightened and
+   brought UP instead — it's a real picture of the bays again — and a
+   white gradient sweeps in from the left to hold the headline. Same
+   trick as the homepage hero, one section shorter. */
+.t-light .page-hero{ background:var(--paper) }
+.t-light .page-hero::before{
+  filter:brightness(1.16) saturate(.72) contrast(.96); opacity:.5;
+}
+.t-light .page-hero::after{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.4) 0%, rgba(255,255,255,0) 30%,
+      rgba(255,255,255,0) 74%, #fff 100%),
+    linear-gradient(90deg, #fff 0%, rgba(255,255,255,.95) 32%,
+      rgba(255,255,255,.62) 62%, rgba(255,255,255,.34) 100%),
+    radial-gradient(80% 120% at 0% 50%, rgba(181,211,39,.13), transparent 60%);
+}
+.t-light .page-hero h1{ color:var(--ink) }
+/* the right-hand annotation is the one line sitting over open photo —
+   it needs the darker of the two greys to clear 4.5:1 against it */
+.t-light .page-hero .anno{ color:var(--steel) }
+
+/* ── 15 · SERVICES PAGE ───────────────────────────────────────────
+   The icon tiles were bright lime on a lime tint — fine glowing on
+   charcoal, a yellow smudge on white. Olive glyph until hover, when the
+   tile fills with lime and the glyph goes dark. */
+.t-light .card__icon{ background:var(--lime-dim); color:var(--lime-ink) }
+.t-light .svc:hover .card__icon,
+.t-light .card:hover .card__icon,
+.t-light .value:hover .card__icon,
+.t-light .person:hover .card__icon{ background:var(--lime); color:#171a05 }
+.t-light .svc:hover .svc__head::after{
+  color:var(--lime-ink); border-left-color:var(--lime-ink);
+}
+.t-light .svc li:hover{ color:var(--ink) }
+.t-light .svc__fig img{ box-shadow:var(--sh-1) }
+
+/* ── 16 · ABOUT PAGE ──────────────────────────────────────────────── */
+.t-light .mission blockquote em{ color:var(--lime-ink) }
+/* the giant open-quote behind the mission was a lime ghost on black;
+   at .14 on a pale band it disappears entirely */
+.t-light .mission blockquote::before{ color:rgba(86,114,11,.13) }
+.t-light .value{ box-shadow:var(--sh-1) }
+.t-light .value:hover{
+  border-color:rgba(86,114,11,.28); box-shadow:var(--sh-3);
+}
+.t-light .value::before{
+  background:radial-gradient(260px circle at var(--mx,50%) var(--my,0%),
+    rgba(181,211,39,.22), transparent 70%);
+}
+
+/* ── 17 · TEAM PAGE ───────────────────────────────────────────────
+   The lime initials discs already carry dark type, so they survive the
+   flip untouched — only the role line and the card lift need re-cutting. */
+.t-light .person{ box-shadow:var(--sh-1) }
+.t-light .person:hover{
+  border-color:rgba(86,114,11,.28); box-shadow:var(--sh-3);
+}
+.t-light .person::before{
+  background:radial-gradient(280px circle at var(--mx,50%) var(--my,0%),
+    rgba(181,211,39,.24), transparent 70%);
+}
+.t-light .person__role{ color:var(--lime-ink) }
+.t-light .person--open .avatar{
+  background:var(--paper-2); color:var(--steel-2); border-color:var(--line-2);
+}
+.t-light .person:hover .avatar{ box-shadow:0 0 0 6px rgba(181,211,39,.26) }
+
+/* ── 18 · CONTACT PAGE ────────────────────────────────────────────── */
+.t-light .info-card{ box-shadow:var(--sh-2) }
+.t-light .map-wrap{ box-shadow:var(--sh-2) }
+.t-light .hours tr:hover th,
+.t-light .hours tr:hover td{ color:var(--lime-ink) }
+
+/* ── 19 · CTA BAND (pre-footer, every subpage) ────────────────────── */
+.t-light .cta-band::before{
+  background:radial-gradient(60% 140% at 50% -20%, rgba(181,211,39,.20),
+    transparent 62%);
+}
+/* the h2 is a tight-leading display cap, so its subline was landing on
+   the baseline with nothing between them */
+.t-light .cta-band p{ margin-top:12px }
+
+/* ── 20 · WORK PAGE FILTERS ───────────────────────────────────────── */
+.t-light .filter:hover{ color:var(--ink); border-color:var(--ink) }
+.t-light .filter.is-on{ box-shadow:0 6px 18px rgba(140,170,20,.24) }
+
+/* ── 21 · GHOST BUTTONS ON THE PALE BANDS ─────────────────────────
+   --line-d was cut for hairlines on black; at 14% ink it's almost gone
+   on the grey bands, so the dark-band ghost button borrows the firmer
+   line and the same soft lift the other buttons get. */
+.t-light .btn--ghost-d{ border-color:var(--line-2) }
+.t-light .btn--ghost-d:hover{ box-shadow:0 10px 24px rgba(22,28,18,.10) }
+
+/* ── 22 · RESPONSIVE FIX-UPS ──────────────────────────────────────── */
 @media (max-width: 760px){
   /* the mobile hero has no room for a side wash — go top-down instead */
   .t-light .hero__bg::after{
     background:linear-gradient(180deg, rgba(255,255,255,.9) 0%,
       rgba(255,255,255,.72) 45%, #fff 100%);
+  }
+  .t-light .page-hero::after{
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.92) 0%,
+        rgba(255,255,255,.8) 55%, #fff 100%),
+      radial-gradient(80% 120% at 0% 50%, rgba(181,211,39,.13), transparent 60%);
   }
 }
