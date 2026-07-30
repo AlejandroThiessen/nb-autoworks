@@ -201,7 +201,30 @@ onScroll();
       io.unobserve(en.target);
     });
   }, { threshold: .12, rootMargin: '0px 0px -7% 0px' });
-  items.forEach(function(n){ io.observe(n); });
+
+  /* Hold the first frame until the DISPLAY font has landed.
+     Headings are sized in `ch`, so their boxes are measured against
+     whichever font is currently rendering — on a phone Archivo used to
+     swap in mid-fade and the hero title re-flowed ~22px wider at 70%
+     opacity, which reads as the fade glitching.
+
+     Waiting on Archivo alone, not document.fonts.ready: the two mono
+     faces are small labels that move nothing, and on a weak connection
+     they were holding the whole page back a further second. The cap is
+     the backstop for a font that never arrives — it delays the reveal
+     rather than withholding it. */
+  function observeAll(){ items.forEach(function(n){ io.observe(n); }); }
+  var started = false;
+  function start(){ if (!started){ started = true; observeAll(); } }
+  var gate = null;
+  if (document.fonts && document.fonts.status !== 'loaded'){
+    try { gate = document.fonts.load('900 1em Archivo'); }
+    catch (e){ gate = document.fonts.ready; }
+  }
+  if (gate && gate.then){
+    gate.then(start, start);
+    setTimeout(start, 1500);
+  } else start();
 })();
 
 /* ── 06 · pointer effects ────────────────────────────────────────
