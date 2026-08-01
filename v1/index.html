@@ -1,0 +1,629 @@
+<!doctype html>
+<!-- t-light: the whole site runs the light theme (assets/light.css),
+     layered over the dark showroom theme in site.css. Drop the class
+     and the light.css link to send a page back to the dark version. -->
+<html lang="en" class="t-light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="NB Autoworks — Taller mecánico y mantenimiento · Campo 4, Chihuahua">NB Autoworks — Auto Repair & Maintenance · Campo 4, Chihuahua</title>
+<meta name="description" content="NB Autoworks is a full-service auto repair and maintenance shop in Campo 4, Chihuahua — trucks, diesel, European and performance vehicles. Book online or WhatsApp us.">
+<meta property="og:title" content="NB Autoworks — Auto Repair & Maintenance · Campo 4, Chihuahua">
+<meta property="og:description" content="NB Autoworks is a full-service auto repair and maintenance shop in Campo 4, Chihuahua — trucks, diesel, European and performance vehicles. Book online or WhatsApp us.">
+<meta property="og:image" content="assets/building-logo.jpg">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<!-- the display font decides the width of every heading (they are sized
+     in ch), so it is fetched alongside the CSS rather than after it -->
+<link rel="preload" href="assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/light.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+
+<a class="skip" href="#main" data-es="Saltar al contenido">Skip to content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-gauge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="8.6"/><path d="M12 12l4.4-4.4"/>
+      <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/>
+      <path d="M12 3.4v2M20.6 12h-2M3.4 12h2"/>
+    </symbol>
+    <symbol id="i-brake" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="3.3"/>
+      <circle cx="12" cy="5.9" r=".9" fill="currentColor" stroke="none"/>
+      <circle cx="18.1" cy="12" r=".9" fill="currentColor" stroke="none"/>
+      <circle cx="12" cy="18.1" r=".9" fill="currentColor" stroke="none"/>
+      <circle cx="5.9" cy="12" r=".9" fill="currentColor" stroke="none"/>
+      <path d="M17.4 3.2a10.4 10.4 0 0 1 3.4 3.3" stroke-width="2.6"/>
+    </symbol>
+    <symbol id="i-coil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7.2 4.4h9.6M7.2 19.6h9.6"/>
+      <path d="M12 4.4L8.6 6.6l6.8 2.3-6.8 2.3 6.8 2.3-6.8 2.3L12 19.6"/>
+    </symbol>
+    <symbol id="i-piston" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="7.4" y="4" width="9.2" height="7.6"/>
+      <path d="M7.4 6.7h9.2M7.4 9.1h9.2M12 11.6v4.1"/>
+      <circle cx="12" cy="18.2" r="2.4"/>
+    </symbol>
+    <symbol id="i-turbo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21.2 12h-2.6"/>
+      <path d="M18.6 12a6.6 6.6 0 1 0-6.6 6.6"/>
+      <path d="M12 18.6h5.4"/>
+      <circle cx="12" cy="12" r="2.7"/>
+    </symbol>
+    <symbol id="i-ecu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="7" y="7" width="10" height="10" rx="1"/>
+      <path d="M9.5 7V4.8M12 7V4.8M14.5 7V4.8M9.5 19.2V17M12 19.2V17M14.5 19.2V17M7 9.5H4.8M7 12H4.8M7 14.5H4.8M19.2 9.5H17M19.2 12H17M19.2 14.5H17"/>
+      <path d="M9.3 13.5l1.4-2.9 1.8 3.5 1.3-2.3"/>
+    </symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3.8c2.9 3.5 4.7 6 4.7 8.5a4.7 4.7 0 1 1-9.4 0C7.3 9.8 9.1 7.3 12 3.8z"/>
+      <path d="M9.9 12.6l1.7 1.7 2.8-3.1"/>
+    </symbol>
+    <symbol id="i-hex" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3.6l7 4v8.8l-7 4-7-4V7.6z"/><circle cx="12" cy="12" r="3.1"/>
+    </symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3.2l7 2.6v5.6c0 4.4-2.9 7.2-7 9.4-4.1-2.2-7-5-7-9.4V5.8z"/>
+      <path d="M9.3 12l1.9 1.9 3.5-3.8"/>
+    </symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4.6 5.4h14.8v10.4H12l-4.2 3.4v-3.4H4.6z"/>
+      <path d="M8.4 10.6h7.2"/>
+    </symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5.2 4.4h4l1.5 4-2.2 1.7a12.6 12.6 0 0 0 5.4 5.4l1.7-2.2 4 1.5v4c0 .7-.6 1.3-1.3 1.2C10.5 19.5 4.5 13.5 4 6c0-.9.5-1.6 1.2-1.6z"/>
+    </symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 21s6.8-5.9 6.8-11A6.8 6.8 0 0 0 5.2 10c0 5.1 6.8 11 6.8 11z"/>
+      <circle cx="12" cy="10" r="2.6"/>
+    </symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4.4" y="5.6" width="15.2" height="14" rx="1.2"/>
+      <path d="M4.4 9.8h15.2M8.4 3.4v3.4M15.6 3.4v3.4"/>
+      <path d="M8.9 13.6l2 2 3.6-3.9"/>
+    </symbol>
+    <symbol id="i-lift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 20.6h14M7.4 20.6V5h2.8v15.6M13.8 20.6V5h2.8v15.6"/>
+      <path d="M10.2 9.4h3.6"/>
+    </symbol>
+    <symbol id="i-watch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="13.4" r="7.2"/><path d="M12 13.4l3.2-3.2"/>
+      <path d="M10 3.2h4M12 3.2v3"/>
+    </symbol>
+    <symbol id="i-star4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3.6l1.9 5.1 5.1 1.9-5.1 1.9-1.9 5.1-1.9-5.1-5.1-1.9 5.1-1.9z"/>
+      <path d="M18.6 16.6l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/>
+    </symbol>
+  </defs>
+</svg>
+<header class="nav" id="nav">
+  <div class="container nav__in">
+    <a class="nav__brand" href="index.html" aria-label="NB Autoworks — home">
+      <img src="assets/logo-nb.png" alt="NB Autoworks" width="550" height="346">
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="services.html" data-es="Servicios">Services</a>
+      <a href="about.html" data-es="Nosotros">About</a>
+      <a href="team.html" data-es="Equipo">Team</a>
+      <a href="work.html" data-es="Trabajos">Our Work</a>
+      <a href="contact.html" data-es="Contacto">Contact</a>
+      <a class="btn btn--primary btn--sm" href="https://my.workshopsoftware.com/bookings.html#/NbAutoworks?token=wx4056" target="_blank" rel="noopener" data-es="Reservar en línea">Book Online</a>
+    </nav>
+    <button class="langbtn" id="langBtn" type="button" aria-label="Switch language / Cambiar idioma">
+      <span data-l="en">EN</span><span class="langbtn__sep">/</span><span data-l="es">ES</span>
+    </button>
+    <button class="burger" id="navBtn" aria-expanded="false" aria-controls="navMenu" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+  <nav class="nav__menu" id="navMenu" aria-label="Mobile">
+    <a href="index.html" class="is-active" data-es="Inicio">Home</a>
+    <a href="services.html" data-es="Servicios">Services</a>
+    <a href="about.html" data-es="Nosotros">About</a>
+    <a href="team.html" data-es="Equipo">Team</a>
+    <a href="work.html" data-es="Trabajos">Our Work</a>
+    <a href="contact.html" data-es="Contacto">Contact</a>
+    <a class="btn btn--primary" href="https://my.workshopsoftware.com/bookings.html#/NbAutoworks?token=wx4056" target="_blank" rel="noopener" data-es="Reservar en línea">Book Online</a>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- ═══ HERO ═════════════════════════════════════════════════════════ -->
+<section class="hero" id="top" aria-labelledby="hero-h">
+  <div class="hero__bg" role="img" aria-label="The NB Autoworks shop floor — clean bays, lifts and the lime-striped walls"></div>
+  <div class="container hero__grid">
+    <div>
+      <p class="eyebrow" data-reveal data-es="Mecánica · Mantenimiento · Performance">Auto repair · Maintenance · Performance</p>
+      <h1 id="hero-h" data-reveal="blur" style="--rd:70ms" data-es="Que siga<br>andando.">
+        Keep it<br>running.
+      </h1>
+      <p class="hero__kick" data-reveal style="--rd:120ms" data-es="Y que ande mejor.">Make it better.</p>
+      <p class="lede" data-reveal style="--rd:170ms" data-es="NB Autoworks es un taller de servicio completo en Campo&nbsp;4 — mantenimiento de rutina, diagnóstico y reparación mayor para camionetas, diésel, autos europeos y proyectos de performance. Reserva en línea, o simplemente mándanos un WhatsApp.">
+        NB Autoworks is a full-service auto shop in Campo&nbsp;4 — routine maintenance,
+        diagnostics and heavy repair for trucks, diesels, European cars and
+        performance builds. Book online, or just send us a WhatsApp.
+      </p>
+      <div class="hero__cta" data-reveal style="--rd:210ms">
+        <a class="btn btn--primary" href="https://my.workshopsoftware.com/bookings.html#/NbAutoworks?token=wx4056" target="_blank" rel="noopener" data-es="Agendar una cita">Book an appointment</a>
+        <a class="btn btn--ghost" href="https://wa.me/526251149099?text=Hola%20NB%20Autoworks%2C%20quiero%20agendar%20una%20cita." target="_blank" rel="noopener">
+          <svg><use href="#i-chat"/></svg><span data-es="Escríbenos por WhatsApp">WhatsApp us</span>
+        </a>
+      </div>
+      <div class="hero__meta" data-reveal style="--rd:280ms">
+        <span><svg><use href="#i-pin"/></svg>C. Monte 412 · Campo 4, Chih.</span>
+        <span><svg><use href="#i-phone"/></svg>+52 625 114 9099</span>
+        <span>English · Español</span>
+      </div>
+    </div>
+
+    <!-- Two instruments on one card: the tach turns over to a dyno pull
+         and back on a timer. Both faces are drawn by site.js §08. -->
+    <div class="gauge-card" data-reveal style="--rd:180ms">
+      <div class="gauge-stage" id="gaugeStage">
+        <div class="gauge-flip" id="gaugeFlip">
+          <div class="inst inst--tach">
+            <svg id="tach" viewBox="0 0 440 440" role="img"
+                 aria-label="Animated tachometer — the engine starts, revs out and settles to idle"></svg>
+          </div>
+          <div class="inst inst--dyno" aria-hidden="true">
+            <svg id="dyno" viewBox="0 0 440 440" role="img"
+                 aria-label="Animated dyno chart — a sample power and torque pull plotted against engine speed"></svg>
+          </div>
+        </div>
+      </div>
+      <div class="gauge-card__chips" aria-hidden="true">
+        <span class="chipset chipset--tach is-on">
+          <span class="chip">OIL <b>92°C</b></span>
+          <span class="chip">RPM <b id="rpmOut">0000</b></span>
+          <span class="chip chip--red">REDLINE <b>7.0K</b></span>
+        </span>
+        <span class="chipset chipset--dyno">
+          <span class="chip">HP <b id="hpOut">000</b></span>
+          <span class="chip">LB-FT <b id="tqOut">000</b></span>
+          <span class="chip chip--red">RPM <b id="dynoRpm">0000</b></span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <a class="scroll-cue" href="#welcome">
+    <span data-es="Baja">Scroll</span>
+    <span class="scroll-cue__line" aria-hidden="true"></span>
+  </a>
+</section>
+
+<div class="band" aria-hidden="true">
+  <div class="ticker">
+    <div class="ticker__track">
+      <div class="ticker__group"><b data-es="Servicio de aceite y filtro">Oil &amp; filter service</b><i></i><b data-es="Diagnóstico">Diagnostics</b><i></i><b data-es="Frenos">Brakes</b><i></i><b data-es="Suspensión y dirección">Suspension &amp; steering</b><i></i><b data-es="Rines y llantas">Wheels &amp; tires</b><i></i><b data-es="Motor y transmisión">Engine &amp; transmission</b><i></i><b data-es="Diésel">Diesel</b><i></i><b data-es="Proyectos de performance">Performance builds</b><i></i><b data-es="Rectificado de discos en sitio">Rotor machining on-site</b><i></i><b data-es="English · Español">English · Español</b><i></i></div>
+      <div class="ticker__group"><b data-es="Servicio de aceite y filtro">Oil &amp; filter service</b><i></i><b data-es="Diagnóstico">Diagnostics</b><i></i><b data-es="Frenos">Brakes</b><i></i><b data-es="Suspensión y dirección">Suspension &amp; steering</b><i></i><b data-es="Rines y llantas">Wheels &amp; tires</b><i></i><b data-es="Motor y transmisión">Engine &amp; transmission</b><i></i><b data-es="Diésel">Diesel</b><i></i><b data-es="Proyectos de performance">Performance builds</b><i></i><b data-es="Rectificado de discos en sitio">Rotor machining on-site</b><i></i><b data-es="English · Español">English · Español</b><i></i></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FACT STRIP ═══════════════════════════════════════════════════ -->
+<section class="strip" aria-label="Quick facts">
+  <div class="container strip__in">
+    <p class="strip__item"><svg aria-hidden="true"><use href="#i-calendar"/></svg><span data-es="<b>Reserva en línea</b>Elige día y hora — el taller te confirma"><b>Book online</b>Pick your day &amp; time — confirmed by the shop</span></p>
+    <p class="strip__item"><svg aria-hidden="true"><use href="#i-hex"/></svg><span data-es="<b>Todas las marcas</b>Camionetas · diésel · europeos · performance"><b>All makes</b>Trucks · diesel · European · performance</span></p>
+    <p class="strip__item"><svg aria-hidden="true"><use href="#i-chat"/></svg><span data-es="<b>Dos idiomas</b>Se habla español · English spoken"><b>Two languages</b>English spoken · Se habla español</span></p>
+    <p class="strip__item"><svg aria-hidden="true"><use href="#i-pin"/></svg><span data-es="<b>Encuéntranos</b>C. Monte 412, Campo 4 · región de Cuauhtémoc"><b>Find us</b>C. Monte 412, Campo 4 · Cuauhtémoc region</span></p>
+  </div>
+</section>
+
+<!-- ═══ WELCOME + VALUE PROPS (wording adapted from about.html values —
+     ══ FILLER-adjacent: owner should sign off the promises here) ═════ -->
+<section class="sec welcome" id="welcome" aria-labelledby="welcome-h">
+  <div class="container">
+    <p class="welcome__hi" data-reveal data-es="Bienvenido,">Welcome,</p>
+    <h2 class="welcome__to" id="welcome-h" data-reveal style="--rd:60ms" data-es="A NB Autoworks">To NB Autoworks</h2>
+    <p class="lede" data-reveal style="--rd:120ms" data-es="Somos un taller de servicio completo en Campo&nbsp;4 — construido para todo, desde el mantenimiento de rutina hasta sacar un motor completo. Te explicamos lo que encontramos en lenguaje claro, y tú decides qué se hace con tu vehículo.">
+      We're a full-service shop in Campo&nbsp;4 — built for everything from routine
+      maintenance to pulling an engine. We explain what we find in plain language,
+      and you decide what happens to your vehicle.
+    </p>
+
+    <div class="props">
+      <div class="prop" data-reveal>
+        <svg aria-hidden="true"><use href="#i-chat"/></svg>
+        <h3 data-es="Respuestas honestas">Honest answers</h3>
+        <p data-es="Sabrás qué necesita y cuánto cuesta — antes de que toquemos una llave.">You'll know what it needs and what it costs — before we touch a wrench.</p>
+      </div>
+      <div class="prop" data-reveal style="--rd:60ms">
+        <svg aria-hidden="true"><use href="#i-hex"/></svg>
+        <h3 data-es="Las herramientas correctas">The right tools</h3>
+        <p data-es="Rampas modernas, diagnóstico de nivel de fábrica y rectificado en sitio.">Modern lifts, factory-level diagnostics and machining on-site.</p>
+      </div>
+      <div class="prop" data-reveal style="--rd:120ms">
+        <svg aria-hidden="true"><use href="#i-shield"/></svg>
+        <h3 data-es="Trabajo que dura">Work that lasts</h3>
+        <p data-es="Torque a especificación, refacciones de calidad y cero atajos.">Torque specs, quality parts and no shortcuts.</p>
+      </div>
+      <div class="prop" data-reveal style="--rd:180ms">
+        <svg aria-hidden="true"><use href="#i-star4"/></svg>
+        <h3 data-es="Parte del campo">Part of the campo</h3>
+        <p data-es="Un taller local con gente local — se habla español e inglés.">A local shop with local people — English &amp; Español spoken.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATEMENT BANNER ═════════════════════════════════════════════ -->
+<section class="statement" aria-label="Statement">
+  <div class="statement__bg" role="img" aria-label="Supercharged V8 engine bay, dimly lit"></div>
+  <div class="container statement__in">
+    <p class="statement__kick" data-reveal data-es="Tu camioneta · Tu auto · Tu proyecto">Your truck · Your daily · Your build</p>
+    <h2 data-reveal="blur" style="--rd:80ms" data-es="Merece algo mejor.">It deserves better.</h2>
+  </div>
+</section>
+
+<!-- ═══ SERVICES (summary — full detail on services.html) ═══════════ -->
+<section class="sec" id="services" aria-labelledby="services-h">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-head__row">
+        <p class="eyebrow" data-es="Lo que hacemos">What we do</p>
+        <p class="anno" data-es="Servicio programado → reparación mayor">Scheduled service → heavy repair</p>
+      </div>
+      <h2 class="sec-title" id="services-h" data-es="Servicio, bien hecho.">Service, done properly.</h2>
+      <p class="lede" data-es="Desde un cambio de aceite hasta sacar el motor completo — el trabajo se hace bien, con el equipo que merece, en un taller de puertas abiertas.">From an oil change to an engine out of the truck — the work is done
+        right, with the equipment it deserves, in a shop you can walk into.</p>
+    </div>
+
+    <div class="discs">
+      <a class="disc" href="services.html#maintenance" data-reveal>
+        <div class="disc__img"><img src="assets/svc-maintenance.jpg" alt="Looking up at a clean driveline and exhaust under a lifted truck" width="1000" height="625" loading="lazy"></div>
+        <h3 data-es="Mantenimiento y aceite">Maintenance &amp; oil service</h3>
+        <p data-es="Aceite y filtro, fluidos, bandas y mantenimiento programado al pie de la letra — todas las marcas.">Oil &amp; filter, fluids, belts and by-the-book scheduled service — all makes.</p>
+        <span class="btn btn--ghost btn--sm" data-es="Detalles">Details</span>
+      </a>
+      <a class="disc" href="services.html#diagnostics" data-reveal style="--rd:60ms">
+        <div class="disc__img"><img src="assets/svc-diagnostics.jpg" alt="Sensor-laden front end of a grey Mercedes CLA" width="1000" height="625" loading="lazy"></div>
+        <h3 data-es="Diagnóstico y eléctrico">Diagnostics &amp; electrical</h3>
+        <p data-es="Luz de check engine, escaneo por computadora, cableado, sensores, baterías y carga.">Check-engine lights, computer scans, wiring, sensors, batteries and charging.</p>
+        <span class="btn btn--ghost btn--sm" data-es="Detalles">Details</span>
+      </a>
+      <a class="disc" href="services.html#brakes" data-reveal style="--rd:120ms">
+        <div class="disc__img"><img src="assets/svc-brakes.jpg" alt="Drilled brake rotor and caliper behind grey wheel spokes" width="1000" height="625" loading="lazy"></div>
+        <h3 data-es="Frenos">Brakes</h3>
+        <p data-es="Balatas, discos y cálipers — con rectificado de discos y tambores en sitio.">Pads, rotors and calipers — with rotor &amp; drum machining done on-site.</p>
+        <span class="btn btn--ghost btn--sm" data-es="Detalles">Details</span>
+      </a>
+      <a class="disc" href="services.html#suspension" data-reveal>
+        <div class="disc__img"><img src="assets/svc-suspension.jpg" alt="New coil spring and shock absorber on a truck axle" width="1000" height="625" loading="lazy"></div>
+        <h3 data-es="Suspensión y llantas">Suspension, steering &amp; tires</h3>
+        <p data-es="Amortiguadores, struts y dirección, kits de lift y nivelación, rines y TPMS.">Shocks, struts and steering parts, lift &amp; leveling kits, wheels and TPMS.</p>
+        <span class="btn btn--ghost btn--sm" data-es="Detalles">Details</span>
+      </a>
+      <a class="disc" href="services.html#engine" data-reveal style="--rd:60ms">
+        <div class="disc__img"><img src="assets/svc-engine.jpg" alt="V8 engine bay with twin turbochargers installed" width="1000" height="625" loading="lazy"></div>
+        <h3 data-es="Motor y transmisión">Engine &amp; transmission</h3>
+        <p data-es="Cambios y reconstrucciones, tren motriz, sistemas de enfriamiento y juntas de cabeza.">Swaps and rebuilds, drivetrain repair, cooling systems and head gaskets.</p>
+        <span class="btn btn--ghost btn--sm" data-es="Detalles">Details</span>
+      </a>
+      <a class="disc" href="services.html#performance" data-reveal style="--rd:120ms">
+        <div class="disc__img"><img src="assets/svc-performance.jpg" alt="Drag radial tire on a polished forged wheel" width="1000" height="625" loading="lazy"></div>
+        <h3 data-es="Performance y mejoras">Performance &amp; upgrades</h3>
+        <p data-es="Proyectos de turbo y supercargador, escape, admisión, aero y fibra de carbono.">Turbo and supercharger builds, exhaust, intake, aero and carbon installs.</p>
+        <span class="btn btn--ghost btn--sm" data-es="Detalles">Details</span>
+      </a>
+    </div>
+
+    <div class="cards__note" data-reveal>
+      <p data-es="<strong>¿No sabes qué necesita?</strong> Descríbenos el problema por WhatsApp — una foto o un video del ruido ayuda mucho."><strong>Not sure what it needs?</strong> Describe the problem on WhatsApp —
+        a photo or a video of the noise helps.</p>
+      <a class="btn btn--ghost btn--sm" href="https://wa.me/526251149099?text=Hola%20NB%20Autoworks%2C%20tengo%20una%20pregunta." target="_blank" rel="noopener">
+        <svg><use href="#i-chat"/></svg><span data-es="Pregunta por WhatsApp">Ask on WhatsApp</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MAKES (replaces the old badge wall — names, not logos) ═══════ -->
+<section class="sec makes" id="makes" aria-labelledby="makes-h">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-head__row">
+        <p class="eyebrow" data-es="Marcas que atendemos">Makes we service</p>
+        <p class="anno" data-es="Las de siempre en nuestras rampas">The regulars on our lifts</p>
+      </div>
+      <h2 class="sec-title" id="makes-h" data-es="Toda marca <em>en nuestras rampas.</em>">Every make <em>on our lifts.</em></h2>
+      <p class="lede" data-es="Camionetas de trabajo, autos de diario, alemanes y muscle americano — si rueda, pasa por nuestras bahías.">Work trucks, dailies, German metal and American muscle —
+        if it rolls, it comes through our bays.</p>
+    </div>
+
+    <div class="makes__grid">
+      <div class="make-col" data-reveal>
+        <h3 data-es="Camionetas y diésel">Trucks &amp; diesel</h3>
+        <ul>
+          <li>Ford</li>
+          <li>Chevrolet</li>
+          <li>GMC</li>
+          <li>Ram</li>
+          <li>Jeep</li>
+        </ul>
+      </div>
+      <div class="make-col" data-reveal style="--rd:70ms">
+        <h3 data-es="Japoneses">Japanese</h3>
+        <ul>
+          <li>Toyota</li>
+          <li>Honda</li>
+          <li>Nissan</li>
+          <li>Mazda</li>
+        </ul>
+      </div>
+      <div class="make-col" data-reveal style="--rd:140ms">
+        <h3 data-es="Europeos">European</h3>
+        <ul>
+          <li>BMW</li>
+          <li>Mercedes-Benz</li>
+          <li>Audi</li>
+          <li>Porsche</li>
+        </ul>
+      </div>
+      <div class="make-col" data-reveal style="--rd:210ms">
+        <h3 data-es="Performance americano">American performance</h3>
+        <ul>
+          <li>Corvette</li>
+          <li>Lincoln</li>
+        </ul>
+        <p data-es="…y los proyectos de una sola pieza: turbo, supercargador y autos de proyecto.">…plus the one-offs: turbo and supercharger builds, project cars.</p>
+      </div>
+    </div>
+
+    <div class="cards__note" data-reveal>
+      <p data-es="<strong>¿No ves tu marca?</strong> Si rueda, lo revisamos — diésel, clásico o recién salido de agencia."><strong>Don't see yours?</strong> If it rolls, we'll look at it —
+        diesel, classic or brand-new.</p>
+      <a class="btn btn--ghost btn--sm" href="https://wa.me/526251149099?text=Hola%20NB%20Autoworks%2C%20tengo%20una%20pregunta." target="_blank" rel="noopener">
+        <svg><use href="#i-chat"/></svg><span data-es="Pregunta por WhatsApp">Ask on WhatsApp</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THE SHOP (teaser — more on about.html) ═══════════════════════ -->
+<section class="sec shop" id="shop" aria-labelledby="shop-h">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-head__row">
+        <p class="eyebrow" data-es="El taller">The shop</p>
+        <p class="anno">C. Monte 412 · Campo 4</p>
+      </div>
+      <h2 class="sec-title" id="shop-h" data-es="Hecho para el trabajo.">Built for the work.</h2>
+    </div>
+
+    <figure class="shop__wide" data-reveal>
+      <img src="assets/building-wide.jpg" alt="The NB Autoworks building — concrete facade with black-framed glass on the Campo 4 road" width="1672" height="621" loading="lazy">
+    </figure>
+
+    <div class="shop__grid">
+      <div class="shop__copy" data-reveal>
+        <p data-es="El taller se construyó para una sola cosa: hacer bien el trabajo automotriz. Puertas altas, bahías iluminadas y un piso tan limpio que el logo NB está pintado directamente sobre él.">The shop was purpose-built for one thing: doing automotive work
+          properly. Tall doors, bright bays and a floor clean enough that
+          the NB logo is painted right on it.</p>
+        <ul class="shop__list">
+          <li><svg><use href="#i-lift"/></svg><span data-es="<b>Rampas modernas en cada bahía</b> — rampas de dos postes más columnas móviles para camionetas pesadas y con lift."><b>Modern lifts in every bay</b> — two-post lifts
+            plus mobile column lifts for heavy and lifted trucks.</span></li>
+          <li><svg><use href="#i-hex"/></svg><span data-es="<b>Equipo de verdad</b> — rectificadora de frenos en sitio, equipo de llantas y alineación, grúas y soportes de motor."><b>Real equipment</b> — on-site brake lathe,
+            tire and alignment gear, engine cranes and supports.</span></li>
+          <li><svg><use href="#i-shield"/></svg><span data-es="<b>Espacio para hacerlo bien</b> — lugar para trabajos de motor fuera y proyectos largos sin apresurar el armado."><b>Room to do it right</b> — space for
+            engine-out jobs and longer builds without rushing the reassembly.</span></li>
+        </ul>
+        <div class="hero__cta">
+          <a class="btn btn--ghost btn--sm" href="about.html" data-es="Nuestra misión e historia">Our mission &amp; story</a>
+          <a class="btn btn--ghost btn--sm" href="team.html" data-es="Conoce al equipo">Meet the team</a>
+        </div>
+      </div>
+      <div class="shop__photos" data-reveal style="--rd:90ms">
+        <figure class="figure">
+          <img src="assets/floor-logo.jpg" alt="NB Autoworks logo painted on the polished shop floor" width="1600" height="900" loading="lazy">
+          <figcaption data-es="El logo en el piso — Campo 4">The floor logo — Campo 4</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THE PROCESS (booking flow — ══ FILLER-adjacent: owner should
+     confirm the step wording matches how the shop actually runs) ════ -->
+<section class="sec flow" id="process" aria-labelledby="flow-h">
+  <div class="container flow__grid">
+    <div class="flow__copy">
+      <div class="sec-head">
+        <p class="eyebrow" data-es="Cómo funciona">How it works</p>
+        <h2 class="sec-title" id="flow-h" data-es="El proceso.">The process.</h2>
+      </div>
+      <p data-es="Reservar es en línea — elige el día y la hora que te acomoden y cuéntanos qué está haciendo el vehículo. El taller confirma tu cita.">
+        Booking is online — pick the day and time that suit you and tell us what
+        the vehicle is doing. The shop confirms your appointment.</p>
+      <p data-es="¿Prefieres platicarlo primero? WhatsApp es la forma más rápida de contactarnos — una foto o un video del problema ayuda mucho.">
+        Prefer to talk it through first? WhatsApp is the fastest way to reach us —
+        a photo or a video of the problem helps.</p>
+      <a class="btn btn--primary" href="https://my.workshopsoftware.com/bookings.html#/NbAutoworks?token=wx4056" target="_blank" rel="noopener" data-es="Agendar una cita">Book an appointment</a>
+    </div>
+
+    <div class="flow__stage" data-reveal>
+      <img src="assets/work-raptor.jpg" alt="F-150 Raptor R on the lift, mid-service" width="1000" height="1250" loading="lazy">
+      <div class="fcards">
+        <div class="fcard" data-reveal style="--rd:80ms">
+          <p class="fcard__step" data-es="Paso 01">Step 01</p>
+          <h3 data-es="Reserva en línea">Book online</h3>
+          <p data-es="Elige día y hora en la página de reservas y describe el problema. Nosotros te confirmamos.">Pick a day &amp; time on the booking page and describe the issue. We'll confirm it with you.</p>
+        </div>
+        <div class="fcard" data-reveal style="--rd:160ms">
+          <p class="fcard__step" data-es="Paso 02">Step 02</p>
+          <h3 data-es="Manos a la obra">Service time</h3>
+          <p data-es="Déjalo con nosotros. Lo revisamos, te consultamos antes de cualquier decisión grande y nos ponemos a trabajar.">Drop it off. We look it over, talk to you before any big decisions, and get to work.</p>
+        </div>
+        <div class="fcard" data-reveal style="--rd:240ms">
+          <p class="fcard__step" data-es="Paso 03">Step 03</p>
+          <h3 data-es="Recógelo">Pick it up</h3>
+          <p data-es="Te avisamos cuando esté listo — recógelo y a rodar.">We let you know when it's ready — pick it up and drive out.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ OUR WORK (teaser — full gallery on work.html) ════════════════ -->
+<section class="sec" id="work" aria-labelledby="work-h">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-head__row">
+        <p class="eyebrow" data-es="Nuestro trabajo">Our work</p>
+        <p class="anno" data-es="Directo del piso del taller">Straight from the shop floor</p>
+      </div>
+      <h2 class="sec-title" id="work-h" data-es="Trabajo reciente del taller.">Recent work from the floor.</h2>
+      <p class="lede" data-es="Autos de diario, camionetas de trabajo y de vez en cuando un juguete serio — esto es lo que pasa por nuestras bahías.">Daily drivers, work trucks and the occasional serious toy —
+        here's the kind of thing that rolls through the bays.</p>
+    </div>
+
+    <div class="gallery">
+      <figure class="shot" data-reveal>
+        <img src="assets/work-zr1.jpg" alt="Red Corvette ZR1 with carbon aero wing in the shop" width="1600" height="900" loading="lazy">
+        <figcaption><span class="shot__t" data-es="Corvette ZR1 — aero y servicio">Corvette ZR1 — aero &amp; service</span><span class="shot__tag">Performance</span></figcaption>
+      </figure>
+      <figure class="shot" data-reveal>
+        <img src="assets/work-raptor.jpg" alt="F-150 Raptor R on the lift with a wheel off on a support stand" width="1000" height="1250" loading="lazy">
+        <figcaption><span class="shot__t" data-es="Raptor R — sin ruedas">Raptor R — wheels off</span><span class="shot__tag" data-es="Camionetas">Trucks</span></figcaption>
+      </figure>
+      <figure class="shot" data-reveal>
+        <img src="assets/work-lt5.jpg" alt="Supercharged LT5 V8 engine bay of the Corvette ZR1" width="1600" height="900" loading="lazy">
+        <figcaption><span class="shot__t" data-es="LT5 supercargado, en servicio">Supercharged LT5, in for work</span><span class="shot__tag" data-es="Motor">Engine</span></figcaption>
+      </figure>
+      <figure class="shot" data-reveal>
+        <img src="assets/work-gls.jpg" alt="Mercedes-Benz GLS on a lift with the powertrain removed" width="1000" height="1250" loading="lazy">
+        <figcaption><span class="shot__t" data-es="Mercedes GLS — tren motriz fuera">Mercedes GLS — powertrain out</span><span class="shot__tag" data-es="Reparación mayor">Heavy repair</span></figcaption>
+      </figure>
+      <figure class="shot" data-reveal>
+        <img src="assets/work-m3.jpg" alt="Lime green BMW M3 Competition in the shop" width="1600" height="900" loading="lazy">
+        <figcaption><span class="shot__t" data-es="M3 Competition — colores del taller">M3 Competition — shop colors</span><span class="shot__tag">Performance</span></figcaption>
+      </figure>
+      <figure class="shot" data-reveal>
+        <img src="assets/work-amg-wheel.jpg" alt="Gloss black AMG multi-spoke wheel on a white Mercedes" width="1000" height="1500" loading="lazy">
+        <figcaption><span class="shot__t" data-es="Rines y llantas">Wheels &amp; tires</span><span class="shot__tag" data-es="Servicio">Service</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="cards__note" data-reveal>
+      <p data-es="<strong>Hay mucho más de donde salió esto.</strong> Proyectos, reparaciones mayores y el equipo que los hace posibles."><strong>There's more where that came from.</strong> Builds, big repairs and
+        the equipment that makes them possible.</p>
+      <a class="btn btn--ghost btn--sm" href="work.html" data-es="Ver todos los trabajos →">See all our work →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ REVIEWS (links to the real Google profile — no invented counts) -->
+<section class="revband" aria-labelledby="rev-h">
+  <div class="container revband__in">
+    <p class="eyebrow" data-es="Reseñas">Reviews</p>
+    <h2 class="sec-title" id="rev-h" data-reveal data-es="Que te lo digan los clientes.">Don't take our word for it.</h2>
+    <p class="lede" data-reveal style="--rd:80ms" data-es="Las reseñas de quienes ya pasaron por el taller viven en nuestro perfil de Google — ve lo que dicen.">
+      Reviews from drivers who've already been through the shop live on our
+      Google profile — go see what they say.</p>
+    <a class="btn btn--ghost-d" data-reveal style="--rd:140ms" href="https://www.google.com/maps/search/?api=1&amp;query=NB%20Autoworks%2C%20C.%20Monte%20412%2C%20Campo%204%2C%20Chihuahua" target="_blank" rel="noopener">
+      <svg><use href="#i-star4"/></svg><span data-es="Leer reseñas en Google">Read our reviews on Google</span>
+    </a>
+  </div>
+</section>
+
+<!-- ═══ VISIT / BOOK ═════════════════════════════════════════════════ -->
+<section class="sec visit" id="visit" aria-labelledby="visit-h">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-head__row">
+        <p class="eyebrow" data-es="Visítanos">Visit us</p>
+        <p class="anno">Campo 4 · Chihuahua</p>
+      </div>
+      <h2 class="sec-title" id="visit-h" data-es="Agenda tu cita — o simplemente pasa.">Book it — or just come by.</h2>
+    </div>
+
+    <div class="visit__grid">
+      <div class="book-card" data-reveal>
+        <h3 data-es="Reserva en línea">Book online</h3>
+        <p data-es="Elige el día y la hora que te acomoden y cuéntanos qué está haciendo el vehículo. Nosotros te confirmamos la cita.">Pick the day and time that suits you and tell us what the vehicle is
+          doing. We'll confirm your appointment.</p>
+        <a class="btn btn--primary" href="https://my.workshopsoftware.com/bookings.html#/NbAutoworks?token=wx4056" target="_blank" rel="noopener">
+          <svg><use href="#i-calendar"/></svg><span data-es="Abrir página de reservas">Open booking page</span>
+        </a>
+        <hr>
+        <div class="contact-rows">
+          <a href="https://wa.me/526251149099?text=Hola%20NB%20Autoworks%2C%20quiero%20agendar%20una%20cita." target="_blank" rel="noopener">
+            <svg><use href="#i-chat"/></svg>
+            <span data-es="<b>WhatsApp</b><span>+52 625 114 9099 — la forma más rápida de contactarnos</span>"><b>WhatsApp</b><span>+52 625 114 9099 — fastest way to reach us</span></span>
+          </a>
+          <a href="tel:+526251149099">
+            <svg><use href="#i-phone"/></svg>
+            <span data-es="<b>Llama al taller</b><span>+52 625 114 9099</span>"><b>Call the shop</b><span>+52 625 114 9099</span></span>
+          </a>
+          <a href="contact.html">
+            <svg><use href="#i-watch"/></svg>
+            <span data-es="<b>Horario y cómo llegar</b><span>Ver la página de contacto</span>"><b>Hours &amp; directions</b><span>See the contact page</span></span>
+          </a>
+        </div>
+      </div>
+
+      <div class="visit-card" data-reveal style="--rd:90ms">
+        <img src="assets/building-logo.jpg" alt="NB Autoworks entrance — chrome NB monogram with green Autoworks lettering on the concrete facade" width="1672" height="809" loading="lazy">
+        <div class="visit-card__body">
+          <address>
+            <b>NB Autoworks</b>
+            C. Monte 412, 31607<br>
+            Campo 4, Chihuahua, México
+          </address>
+          <a class="btn btn--ghost btn--sm" href="https://www.google.com/maps/search/?api=1&amp;query=NB%20Autoworks%2C%20C.%20Monte%20412%2C%20Campo%204%2C%20Chihuahua" target="_blank" rel="noopener">
+            <svg><use href="#i-pin"/></svg><span data-es="Abrir en Google Maps">Open in Google Maps</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══ FOOTER ═══════════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="foot__grid">
+      <div class="foot__brand">
+        <img src="assets/logo-nb.png" alt="NB Autoworks" width="550" height="346">
+        <p data-es="Taller de reparación y mantenimiento automotriz en Campo&nbsp;4, Chihuahua. English spoken · Se habla español.">Car repair and maintenance service in Campo&nbsp;4, Chihuahua.
+           English spoken · Se habla español.</p>
+      </div>
+      <div>
+        <h4 data-es="Taller">Shop</h4>
+        <nav aria-label="Footer — pages">
+          <a href="index.html" data-es="Inicio">Home</a>
+          <a href="services.html" data-es="Servicios">Services</a>
+          <a href="about.html" data-es="Nosotros">About</a>
+          <a href="team.html" data-es="Equipo">Team</a>
+          <a href="work.html" data-es="Trabajos">Our Work</a>
+          <a href="contact.html" data-es="Contacto">Contact</a>
+        </nav>
+      </div>
+      <div>
+        <h4 data-es="Contacto">Contact</h4>
+        <div class="foot__contact">
+          <a href="tel:+526251149099">+52 625 114 9099</a>
+          <a href="https://wa.me/526251149099" target="_blank" rel="noopener">WhatsApp</a>
+          <a href="https://my.workshopsoftware.com/bookings.html#/NbAutoworks?token=wx4056" target="_blank" rel="noopener" data-es="Reservar en línea">Book online</a>
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=NB%20Autoworks%2C%20C.%20Monte%20412%2C%20Campo%204%2C%20Chihuahua" target="_blank" rel="noopener">C. Monte 412, Campo 4</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <span>© <span id="year">2026</span> NB Autoworks · Campo 4, Chihuahua, México</span>
+      <span data-es="Camionetas · Diésel · Europeos · Performance">Trucks · Diesel · European · Performance</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

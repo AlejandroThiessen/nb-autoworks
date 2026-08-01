@@ -1,0 +1,4 @@
+# Preview build — not the live site.
+# The real site is https://nbautoworks.com (not launched yet).
+User-agent: *
+Disallow: /

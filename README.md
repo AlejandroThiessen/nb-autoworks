@@ -1,7 +1,11 @@
-# NB Autoworks — website
+# NB Autoworks — website preview
 
-Multi-page static website for NB Autoworks, an auto repair & performance shop in Campo 4, Chihuahua, Mexico.
+**Live preview:** https://alejandrothiessen.github.io/nb-autoworks/
+**Earlier prototype:** https://alejandrothiessen.github.io/nb-autoworks/v1/
 
-Plain HTML/CSS/JS, no build step. Open `index.html` or serve the folder with any static file server.
+This branch holds a **built preview**, not the source. It is noindexed and is
+not the production site — production is Cloudflare Pages on nbautoworks.com,
+which has not launched. Do not share this link publicly.
 
-Pages: Home · Services · Our Work · About · Team · Contact
+Source lives in the `NB-AutoWorks` project (Astro + Tailwind, bilingual ES/EN).
+Republish with `site/scripts/deploy-gh-pages.sh`.
