@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!--
+    PLACEHOLDER mark — same reconstruction as src/components/layout/Logo.astro.
+    Replace with the owner's vector artwork, then re-run
+    `node scripts/build-brand-assets.mjs` to regenerate the PNG set.
+  -->
+  <rect width="512" height="512" fill="#0B0B0C"/>
+  <g transform="translate(66 166) scale(1.115)"
+     fill="none" stroke="#F4F5F3" stroke-width="16"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 118 L74 30 L126 84 L172 26"/>
+    <path d="M180 10 H288 A22 22 0 0 1 288 54"/>
+    <path d="M192 54 H298"/>
+    <path d="M298 54 A28 28 0 0 1 298 110 H96"/>
+  </g>
+</svg>
